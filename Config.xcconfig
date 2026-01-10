@@ -1,0 +1,6 @@
+// Configuration settings for Trailers app
+// DO NOT COMMIT THIS FILE TO VERSION CONTROL
+
+// TMDB API Configuration
+// Get your API key from: https://www.themoviedb.org/settings/api
+TMDB_API_KEY = edeb806e2c1de77f6e0d2d61a6b773b6
