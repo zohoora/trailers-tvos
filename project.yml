@@ -1,0 +1,104 @@
+name: Trailers
+options:
+  bundleIdPrefix: com.personal
+  deploymentTarget:
+    tvOS: "17.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+configFiles:
+  Debug: Config.xcconfig
+  Release: Config.xcconfig
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    SWIFT_STRICT_CONCURRENCY: complete
+  configs:
+    Debug:
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  Trailers:
+    type: application
+    platform: tvOS
+    deploymentTarget: "17.0"
+    configFiles:
+      Debug: Config.xcconfig
+      Release: Config.xcconfig
+    sources:
+      - path: Trailers
+        excludes:
+          - Tests
+          - Resources/ARCHITECTURE.md
+    settings:
+      base:
+        INFOPLIST_FILE: Trailers/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.personal.Trailers
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: false
+        INFOPLIST_EXPAND_BUILD_SETTINGS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: App Icon & Top Shelf Image
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    dependencies:
+      - package: Nuke
+        product: Nuke
+      - package: Nuke
+        product: NukeUI
+
+  TrailersTests:
+    type: bundle.unit-test
+    platform: tvOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Trailers/Tests/Unit
+    dependencies:
+      - target: Trailers
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+
+  TrailersUITests:
+    type: bundle.ui-testing
+    platform: tvOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Trailers/Tests/UI
+    dependencies:
+      - target: Trailers
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+
+packages:
+  Nuke:
+    url: https://github.com/kean/Nuke
+    from: "12.0.0"
+
+schemes:
+  Trailers:
+    build:
+      targets:
+        Trailers: all
+        TrailersTests: [test]
+        TrailersUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TrailersTests
+        - TrailersUITests
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

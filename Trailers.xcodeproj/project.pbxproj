@@ -1,0 +1,823 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0457BDCCA58B07AF17F98352 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE77F733B67DA943730CCABE /* Constants.swift */; };
+		0DCA6439F15FD8730E480F0F /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 312C29DF4075A7B685379A62 /* Nuke */; };
+		11DA34ECF7C1A74F2B6202F4 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645C8078D527C6D591BB7B66 /* Genre.swift */; };
+		136939ED0EBA36147A88B3F3 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7521E7C1CD2C008236CBD /* NetworkClient.swift */; };
+		1DA08DD1BD2E2CAACE6F8CEE /* FilterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390F3F9A65F61B8AE8C16A90 /* FilterStateTests.swift */; };
+		23D27098E530FD2A4123DAF1 /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0B05BEF7E850882290DC8 /* MediaSummary.swift */; };
+		3C551477351EA3F381DE951E /* TMDBTVDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCE4A505A3742018A01F7 /* TMDBTVDetailDTO.swift */; };
+		4321D6A7FF3CB7EFD6000CCE /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5473B89571C4286446103 /* Config.swift */; };
+		4D367620800D96E52D7B65B6 /* ResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78CD47B2DF970BB451AF3CC /* ResponseCache.swift */; };
+		4FDA61A33D371965B887AA6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24C2CCA10D4ECF3CE35B83BE /* Assets.xcassets */; };
+		501C1A82C4AE0165437D0882 /* ErrorOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA1187D438FA55C26F05AD5 /* ErrorOverlayView.swift */; };
+		53EEDD734E7AF9E4FBE94AFB /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B78CC1EC2B1E458F96D81F6 /* DateUtils.swift */; };
+		542B2551D83AD4A1F4BA2670 /* TrailerSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46E58D8C97A5904B777084 /* TrailerSelectorView.swift */; };
+		54A77916522826FEB72E1CA0 /* TMDBGenreListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01EF2072A43628AB8E0A289 /* TMDBGenreListDTO.swift */; };
+		60EC7215AE2D0EC9BAE9016D /* TMDBTrendingAllDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D19928F9E0496282855D649 /* TMDBTrendingAllDTO.swift */; };
+		619C95C6AD92E73E32A3CAEA /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FDCA893935843519813 /* Logging.swift */; };
+		68B80B9A79407998ACD19E6F /* TMDBTVListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4AC5624AB8F4EEE332438 /* TMDBTVListDTO.swift */; };
+		72FBC5832DFF2F94E97338B7 /* VideoRankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54F66B90B90B084E1ECB50C /* VideoRankingTests.swift */; };
+		810A2B6B56D0025A7AFB277A /* BrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FFE6A32B572727446EAC83 /* BrowseView.swift */; };
+		8C325D6B8CACB2EBD1D264EF /* BrowseViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF87283649832F4D131FB67 /* BrowseViewUITests.swift */; };
+		903385AA6DA0DEDAACDEB6DA /* YouTubeLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC827E8361E5AD362E675E3 /* YouTubeLauncher.swift */; };
+		954B1E9D65C82CE755BE9885 /* ImagePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03869622C7829BE82A60538F /* ImagePipeline.swift */; };
+		9B9E1179EC1C0B26EC6729FD /* ContentGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A2777B7CA0FC3454F8121E /* ContentGridViewModel.swift */; };
+		9CB48E0A6B14DA46A500038E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9819A663D53D54E4036C7C /* DetailView.swift */; };
+		A91383E41624516E1A6FC8FB /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01DBFB9B2E077557E26A6F2 /* FilterViewModel.swift */; };
+		A94E8E8726AF6E8A112ED3FB /* MediaID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6CA59CC56E75BD53DA2080 /* MediaID.swift */; };
+		AA0135ED8749E1CE15B4629A /* TrailersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33B1ACE91BF318A135E967E /* TrailersApp.swift */; };
+		ABD7B45D3BDDC73BC7E41950 /* TMDBMovieDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736AD81CBF20D6ECD78E81A /* TMDBMovieDetailDTO.swift */; };
+		B59B2D360B28B73CB428262A /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4741D7AA3D6EB10EDA38909F /* NetworkMonitor.swift */; };
+		B805F4BF935FBBD87D3BA107 /* TMDBPaginatedDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9DFDB5288B7E554F3408F4 /* TMDBPaginatedDTO.swift */; };
+		B85E8F5139F9A700818621E1 /* FilterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FD14776EA583DFEC18DF66 /* FilterBarView.swift */; };
+		BDC368B7BB01F2DE1A2D8D47 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BC1674B42F9A090169D0C9 /* MediaType.swift */; };
+		C517760B37DD36F756680174 /* PosterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB31DFA654DF36F317CC4ED6 /* PosterCardView.swift */; };
+		C63645929DF9FC008878DD18 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A09F88C3EEDF62230D1BB1 /* DetailViewModel.swift */; };
+		CA0801437649D6C1A4F7EAAC /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19DB8BBD256D8B0793BC416 /* Video.swift */; };
+		CBF0173CCF8FA09CDDA5CECA /* MediaDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C59A911E81517CF1A9B07D2 /* MediaDetail.swift */; };
+		CC62812BF93450021BFD20D2 /* DateUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5F0D0FFB12141916973E3B /* DateUtilsTests.swift */; };
+		D6374CC8D94F42E765525E7D /* FilterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3387467D0AD2CE46CE014326 /* FilterState.swift */; };
+		DABDAB939EF81C49E45BCD03 /* TMDBMovieListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C28BC33070F48C513BF2B82 /* TMDBMovieListDTO.swift */; };
+		E1301FA391D327445B3ECC11 /* LoadingFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A38F75E0F647B9211614B5C /* LoadingFooterView.swift */; };
+		E6749B31B19E7770D4A938DA /* TMDBVideoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5D1EABF7355700B7A7592 /* TMDBVideoDTO.swift */; };
+		E973EB9B9242AB8741F67CAE /* TMDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5A614A8F365D14FFE43CE1 /* TMDBService.swift */; };
+		F51E68F3CB8401FED0CCDD79 /* DTODecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF6DE080C9D5D568CA9B9CE /* DTODecodingTests.swift */; };
+		FBAF0DE89CFC29388B21FB30 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 093CDB72D99C843B0927FD3E /* NukeUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		51A5B220D36BE4D251DFB54E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8F87E14E309A1548C9514E3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17D9E0881504AC4C409CABFE;
+			remoteInfo = Trailers;
+		};
+		535100D9B08787638486EC07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8F87E14E309A1548C9514E3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17D9E0881504AC4C409CABFE;
+			remoteInfo = Trailers;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03869622C7829BE82A60538F /* ImagePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePipeline.swift; sourceTree = "<group>"; };
+		0D9D96BF070662EDE8A1339A /* TrailersTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TrailersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1736AD81CBF20D6ECD78E81A /* TMDBMovieDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBMovieDetailDTO.swift; sourceTree = "<group>"; };
+		20FD14776EA583DFEC18DF66 /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
+		21A2777B7CA0FC3454F8121E /* ContentGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentGridViewModel.swift; sourceTree = "<group>"; };
+		24C2CCA10D4ECF3CE35B83BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2D9DFDB5288B7E554F3408F4 /* TMDBPaginatedDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBPaginatedDTO.swift; sourceTree = "<group>"; };
+		2F5F0D0FFB12141916973E3B /* DateUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilsTests.swift; sourceTree = "<group>"; };
+		3387467D0AD2CE46CE014326 /* FilterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterState.swift; sourceTree = "<group>"; };
+		390F3F9A65F61B8AE8C16A90 /* FilterStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStateTests.swift; sourceTree = "<group>"; };
+		3B78CC1EC2B1E458F96D81F6 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		3D19928F9E0496282855D649 /* TMDBTrendingAllDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTrendingAllDTO.swift; sourceTree = "<group>"; };
+		3DF87283649832F4D131FB67 /* BrowseViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewUITests.swift; sourceTree = "<group>"; };
+		4741D7AA3D6EB10EDA38909F /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		4AB0B05BEF7E850882290DC8 /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
+		4D9819A663D53D54E4036C7C /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		52FFE6A32B572727446EAC83 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
+		57182C0B5E6E0C58C57263F5 /* TrailersUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TrailersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C59A911E81517CF1A9B07D2 /* MediaDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetail.swift; sourceTree = "<group>"; };
+		645C8078D527C6D591BB7B66 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
+		65E7521E7C1CD2C008236CBD /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		6CF6DE080C9D5D568CA9B9CE /* DTODecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTODecodingTests.swift; sourceTree = "<group>"; };
+		7AABCE4A505A3742018A01F7 /* TMDBTVDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTVDetailDTO.swift; sourceTree = "<group>"; };
+		7C46E58D8C97A5904B777084 /* TrailerSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerSelectorView.swift; sourceTree = "<group>"; };
+		8A38F75E0F647B9211614B5C /* LoadingFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFooterView.swift; sourceTree = "<group>"; };
+		9C28BC33070F48C513BF2B82 /* TMDBMovieListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBMovieListDTO.swift; sourceTree = "<group>"; };
+		9D6CA59CC56E75BD53DA2080 /* MediaID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaID.swift; sourceTree = "<group>"; };
+		A01EF2072A43628AB8E0A289 /* TMDBGenreListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBGenreListDTO.swift; sourceTree = "<group>"; };
+		A33B1ACE91BF318A135E967E /* TrailersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailersApp.swift; sourceTree = "<group>"; };
+		A69105E2C18C0191CBB118DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A7A09F88C3EEDF62230D1BB1 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		A85DF1B57DE28C83B7B66AF7 /* Trailers.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Trailers.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE77F733B67DA943730CCABE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BB31DFA654DF36F317CC4ED6 /* PosterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCardView.swift; sourceTree = "<group>"; };
+		BF47744B721D4F5E26E3E5AF /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		BFC827E8361E5AD362E675E3 /* YouTubeLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeLauncher.swift; sourceTree = "<group>"; };
+		C01DBFB9B2E077557E26A6F2 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
+		C78CD47B2DF970BB451AF3CC /* ResponseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCache.swift; sourceTree = "<group>"; };
+		CDA5473B89571C4286446103 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		CF5A614A8F365D14FFE43CE1 /* TMDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBService.swift; sourceTree = "<group>"; };
+		D7635FDCA893935843519813 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		D8B5D1EABF7355700B7A7592 /* TMDBVideoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBVideoDTO.swift; sourceTree = "<group>"; };
+		E0BC1674B42F9A090169D0C9 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
+		E19DB8BBD256D8B0793BC416 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		F54F66B90B90B084E1ECB50C /* VideoRankingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRankingTests.swift; sourceTree = "<group>"; };
+		FCA1187D438FA55C26F05AD5 /* ErrorOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorOverlayView.swift; sourceTree = "<group>"; };
+		FFD4AC5624AB8F4EEE332438 /* TMDBTVListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTVListDTO.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96042E95EAAFC8C300AFC014 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DCA6439F15FD8730E480F0F /* Nuke in Frameworks */,
+				FBAF0DE89CFC29388B21FB30 /* NukeUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		057DC0677A5CB8EE7165D552 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				4D9819A663D53D54E4036C7C /* DetailView.swift */,
+				FCA1187D438FA55C26F05AD5 /* ErrorOverlayView.swift */,
+				7C46E58D8C97A5904B777084 /* TrailerSelectorView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2B99B024D9E6D48DC12F29D5 /* Trailers */ = {
+			isa = PBXGroup;
+			children = (
+				A69105E2C18C0191CBB118DC /* Info.plist */,
+				EF56A1E7E1CB07C7D194428E /* App */,
+				9A87CCC9D0D63D6185EA8E86 /* Core */,
+				7A75130E1E36C01DC07B18CE /* Models */,
+				5E6031ADBD7690AB7D6CB40C /* Resources */,
+				83D3272BAAFB4FB001B78E50 /* Services */,
+				2D2DD5C07C4A0A923D1545C8 /* ViewModels */,
+				EC0A54C111A01A2F4386BB06 /* Views */,
+			);
+			path = Trailers;
+			sourceTree = "<group>";
+		};
+		2CC23C16EFEFAB4A7075774A /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				52FFE6A32B572727446EAC83 /* BrowseView.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		2D2DD5C07C4A0A923D1545C8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				21A2777B7CA0FC3454F8121E /* ContentGridViewModel.swift */,
+				A7A09F88C3EEDF62230D1BB1 /* DetailViewModel.swift */,
+				C01DBFB9B2E077557E26A6F2 /* FilterViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5E6031ADBD7690AB7D6CB40C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				24C2CCA10D4ECF3CE35B83BE /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		7A75130E1E36C01DC07B18CE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A80CEB515B5DB87C72272647 /* Domain */,
+				9D64CA9017916943DD91C8C7 /* DTO */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		83D3272BAAFB4FB001B78E50 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				03869622C7829BE82A60538F /* ImagePipeline.swift */,
+				65E7521E7C1CD2C008236CBD /* NetworkClient.swift */,
+				4741D7AA3D6EB10EDA38909F /* NetworkMonitor.swift */,
+				C78CD47B2DF970BB451AF3CC /* ResponseCache.swift */,
+				CF5A614A8F365D14FFE43CE1 /* TMDBService.swift */,
+				BFC827E8361E5AD362E675E3 /* YouTubeLauncher.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8A02D00AAF8E50964EA63EFA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				20FD14776EA583DFEC18DF66 /* FilterBarView.swift */,
+				8A38F75E0F647B9211614B5C /* LoadingFooterView.swift */,
+				BB31DFA654DF36F317CC4ED6 /* PosterCardView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		98F3DD60865AEBF513B1E85B /* TrailerApp */ = {
+			isa = PBXGroup;
+			children = (
+				BF47744B721D4F5E26E3E5AF /* Config.xcconfig */,
+			);
+			name = TrailerApp;
+			path = .;
+			sourceTree = "<group>";
+		};
+		9A87CCC9D0D63D6185EA8E86 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CDA5473B89571C4286446103 /* Config.swift */,
+				AE77F733B67DA943730CCABE /* Constants.swift */,
+				3B78CC1EC2B1E458F96D81F6 /* DateUtils.swift */,
+				D7635FDCA893935843519813 /* Logging.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		9D64CA9017916943DD91C8C7 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				A01EF2072A43628AB8E0A289 /* TMDBGenreListDTO.swift */,
+				1736AD81CBF20D6ECD78E81A /* TMDBMovieDetailDTO.swift */,
+				9C28BC33070F48C513BF2B82 /* TMDBMovieListDTO.swift */,
+				2D9DFDB5288B7E554F3408F4 /* TMDBPaginatedDTO.swift */,
+				3D19928F9E0496282855D649 /* TMDBTrendingAllDTO.swift */,
+				7AABCE4A505A3742018A01F7 /* TMDBTVDetailDTO.swift */,
+				FFD4AC5624AB8F4EEE332438 /* TMDBTVListDTO.swift */,
+				D8B5D1EABF7355700B7A7592 /* TMDBVideoDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		A05EB97282EACD27DB476633 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A85DF1B57DE28C83B7B66AF7 /* Trailers.app */,
+				0D9D96BF070662EDE8A1339A /* TrailersTests.xctest */,
+				57182C0B5E6E0C58C57263F5 /* TrailersUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A80CEB515B5DB87C72272647 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3387467D0AD2CE46CE014326 /* FilterState.swift */,
+				645C8078D527C6D591BB7B66 /* Genre.swift */,
+				5C59A911E81517CF1A9B07D2 /* MediaDetail.swift */,
+				9D6CA59CC56E75BD53DA2080 /* MediaID.swift */,
+				4AB0B05BEF7E850882290DC8 /* MediaSummary.swift */,
+				E0BC1674B42F9A090169D0C9 /* MediaType.swift */,
+				E19DB8BBD256D8B0793BC416 /* Video.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		BE7198DA052B0A9841400DED = {
+			isa = PBXGroup;
+			children = (
+				98F3DD60865AEBF513B1E85B /* TrailerApp */,
+				2B99B024D9E6D48DC12F29D5 /* Trailers */,
+				EB2F694452A5059412D04ABE /* UI */,
+				D1DBC4B1B3AEA9C8B30DC499 /* Unit */,
+				A05EB97282EACD27DB476633 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D1DBC4B1B3AEA9C8B30DC499 /* Unit */ = {
+			isa = PBXGroup;
+			children = (
+				2F5F0D0FFB12141916973E3B /* DateUtilsTests.swift */,
+				6CF6DE080C9D5D568CA9B9CE /* DTODecodingTests.swift */,
+				390F3F9A65F61B8AE8C16A90 /* FilterStateTests.swift */,
+				F54F66B90B90B084E1ECB50C /* VideoRankingTests.swift */,
+			);
+			name = Unit;
+			path = Trailers/Tests/Unit;
+			sourceTree = "<group>";
+		};
+		EB2F694452A5059412D04ABE /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3DF87283649832F4D131FB67 /* BrowseViewUITests.swift */,
+			);
+			name = UI;
+			path = Trailers/Tests/UI;
+			sourceTree = "<group>";
+		};
+		EC0A54C111A01A2F4386BB06 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8A02D00AAF8E50964EA63EFA /* Components */,
+				2CC23C16EFEFAB4A7075774A /* Root */,
+				057DC0677A5CB8EE7165D552 /* Screens */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EF56A1E7E1CB07C7D194428E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A33B1ACE91BF318A135E967E /* TrailersApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		17D9E0881504AC4C409CABFE /* Trailers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE92CC191AB4EAD40A889CF2 /* Build configuration list for PBXNativeTarget "Trailers" */;
+			buildPhases = (
+				271B347CDA737D1449CA65B4 /* Sources */,
+				86E4CCDFE2E8D55BAEA2438F /* Resources */,
+				96042E95EAAFC8C300AFC014 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Trailers;
+			packageProductDependencies = (
+				312C29DF4075A7B685379A62 /* Nuke */,
+				093CDB72D99C843B0927FD3E /* NukeUI */,
+			);
+			productName = Trailers;
+			productReference = A85DF1B57DE28C83B7B66AF7 /* Trailers.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4E77A2ACE6836F0F5DEF1F93 /* TrailersTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9A51FDFA6E11FE63004FB6A /* Build configuration list for PBXNativeTarget "TrailersTests" */;
+			buildPhases = (
+				6AB564BB186EAFD4FAF1BE64 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA3E0B6959C9794451776A3C /* PBXTargetDependency */,
+			);
+			name = TrailersTests;
+			packageProductDependencies = (
+			);
+			productName = TrailersTests;
+			productReference = 0D9D96BF070662EDE8A1339A /* TrailersTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C12F7DBE955B564C4D813354 /* TrailersUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2B7E256473BA6AD2C9B0FFC /* Build configuration list for PBXNativeTarget "TrailersUITests" */;
+			buildPhases = (
+				5211BC6A1C99CAB1F64B9890 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				067D859CAF423262A773590A /* PBXTargetDependency */,
+			);
+			name = TrailersUITests;
+			packageProductDependencies = (
+			);
+			productName = TrailersUITests;
+			productReference = 57182C0B5E6E0C58C57263F5 /* TrailersUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C8F87E14E309A1548C9514E3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					C12F7DBE955B564C4D813354 = {
+						TestTargetID = 17D9E0881504AC4C409CABFE;
+					};
+				};
+			};
+			buildConfigurationList = A125242CCBEB97F58536838D /* Build configuration list for PBXProject "Trailers" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = BE7198DA052B0A9841400DED;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CC5839703B42A5AD7C2BBB10 /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				17D9E0881504AC4C409CABFE /* Trailers */,
+				4E77A2ACE6836F0F5DEF1F93 /* TrailersTests */,
+				C12F7DBE955B564C4D813354 /* TrailersUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		86E4CCDFE2E8D55BAEA2438F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FDA61A33D371965B887AA6E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		271B347CDA737D1449CA65B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				810A2B6B56D0025A7AFB277A /* BrowseView.swift in Sources */,
+				4321D6A7FF3CB7EFD6000CCE /* Config.swift in Sources */,
+				0457BDCCA58B07AF17F98352 /* Constants.swift in Sources */,
+				9B9E1179EC1C0B26EC6729FD /* ContentGridViewModel.swift in Sources */,
+				53EEDD734E7AF9E4FBE94AFB /* DateUtils.swift in Sources */,
+				9CB48E0A6B14DA46A500038E /* DetailView.swift in Sources */,
+				C63645929DF9FC008878DD18 /* DetailViewModel.swift in Sources */,
+				501C1A82C4AE0165437D0882 /* ErrorOverlayView.swift in Sources */,
+				B85E8F5139F9A700818621E1 /* FilterBarView.swift in Sources */,
+				D6374CC8D94F42E765525E7D /* FilterState.swift in Sources */,
+				A91383E41624516E1A6FC8FB /* FilterViewModel.swift in Sources */,
+				11DA34ECF7C1A74F2B6202F4 /* Genre.swift in Sources */,
+				954B1E9D65C82CE755BE9885 /* ImagePipeline.swift in Sources */,
+				E1301FA391D327445B3ECC11 /* LoadingFooterView.swift in Sources */,
+				619C95C6AD92E73E32A3CAEA /* Logging.swift in Sources */,
+				CBF0173CCF8FA09CDDA5CECA /* MediaDetail.swift in Sources */,
+				A94E8E8726AF6E8A112ED3FB /* MediaID.swift in Sources */,
+				23D27098E530FD2A4123DAF1 /* MediaSummary.swift in Sources */,
+				BDC368B7BB01F2DE1A2D8D47 /* MediaType.swift in Sources */,
+				136939ED0EBA36147A88B3F3 /* NetworkClient.swift in Sources */,
+				B59B2D360B28B73CB428262A /* NetworkMonitor.swift in Sources */,
+				C517760B37DD36F756680174 /* PosterCardView.swift in Sources */,
+				4D367620800D96E52D7B65B6 /* ResponseCache.swift in Sources */,
+				54A77916522826FEB72E1CA0 /* TMDBGenreListDTO.swift in Sources */,
+				ABD7B45D3BDDC73BC7E41950 /* TMDBMovieDetailDTO.swift in Sources */,
+				DABDAB939EF81C49E45BCD03 /* TMDBMovieListDTO.swift in Sources */,
+				B805F4BF935FBBD87D3BA107 /* TMDBPaginatedDTO.swift in Sources */,
+				E973EB9B9242AB8741F67CAE /* TMDBService.swift in Sources */,
+				3C551477351EA3F381DE951E /* TMDBTVDetailDTO.swift in Sources */,
+				68B80B9A79407998ACD19E6F /* TMDBTVListDTO.swift in Sources */,
+				60EC7215AE2D0EC9BAE9016D /* TMDBTrendingAllDTO.swift in Sources */,
+				E6749B31B19E7770D4A938DA /* TMDBVideoDTO.swift in Sources */,
+				542B2551D83AD4A1F4BA2670 /* TrailerSelectorView.swift in Sources */,
+				AA0135ED8749E1CE15B4629A /* TrailersApp.swift in Sources */,
+				CA0801437649D6C1A4F7EAAC /* Video.swift in Sources */,
+				903385AA6DA0DEDAACDEB6DA /* YouTubeLauncher.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5211BC6A1C99CAB1F64B9890 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C325D6B8CACB2EBD1D264EF /* BrowseViewUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AB564BB186EAFD4FAF1BE64 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F51E68F3CB8401FED0CCDD79 /* DTODecodingTests.swift in Sources */,
+				CC62812BF93450021BFD20D2 /* DateUtilsTests.swift in Sources */,
+				1DA08DD1BD2E2CAACE6F8CEE /* FilterStateTests.swift in Sources */,
+				72FBC5832DFF2F94E97338B7 /* VideoRankingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		067D859CAF423262A773590A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17D9E0881504AC4C409CABFE /* Trailers */;
+			targetProxy = 535100D9B08787638486EC07 /* PBXContainerItemProxy */;
+		};
+		AA3E0B6959C9794451776A3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17D9E0881504AC4C409CABFE /* Trailers */;
+			targetProxy = 51A5B220D36BE4D251DFB54E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0330FD02EF311B4075869DA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
+				INFOPLIST_FILE = Trailers/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.Trailers;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		043ACF40E64E10633392A737 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.TrailersUITests;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = Trailers;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		3A8F650A7B15E8D157C90C98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.TrailersTests;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trailers.app/Trailers";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		687619815D9EFA98BD86F0CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.9;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		69BDE984F5644EA1C7A1CECC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.TrailersUITests;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = Trailers;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		A54A14161E3A459BA293E378 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.TrailersTests;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trailers.app/Trailers";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		C2AB11BE2D383529DE557C63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
+				INFOPLIST_FILE = Trailers/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.personal.Trailers;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		F9BD02DE6182B02F0D5EE817 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.9;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A125242CCBEB97F58536838D /* Build configuration list for PBXProject "Trailers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9BD02DE6182B02F0D5EE817 /* Debug */,
+				687619815D9EFA98BD86F0CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B9A51FDFA6E11FE63004FB6A /* Build configuration list for PBXNativeTarget "TrailersTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A8F650A7B15E8D157C90C98 /* Debug */,
+				A54A14161E3A459BA293E378 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C2B7E256473BA6AD2C9B0FFC /* Build configuration list for PBXNativeTarget "TrailersUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				043ACF40E64E10633392A737 /* Debug */,
+				69BDE984F5644EA1C7A1CECC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FE92CC191AB4EAD40A889CF2 /* Build configuration list for PBXNativeTarget "Trailers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0330FD02EF311B4075869DA5 /* Debug */,
+				C2AB11BE2D383529DE557C63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CC5839703B42A5AD7C2BBB10 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		093CDB72D99C843B0927FD3E /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC5839703B42A5AD7C2BBB10 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
+		312C29DF4075A7B685379A62 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC5839703B42A5AD7C2BBB10 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C8F87E14E309A1548C9514E3 /* Project object */;
+}

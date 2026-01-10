@@ -1,0 +1,11 @@
+// Configuration settings for Trailers app
+//
+// SETUP INSTRUCTIONS:
+// 1. Copy this file to Config.xcconfig (which is gitignored)
+// 2. Replace the placeholder with your actual TMDB API Key
+// 3. Get your API Key from: https://www.themoviedb.org/settings/api
+//
+// DO NOT COMMIT Config.xcconfig TO VERSION CONTROL
+
+// TMDB API Configuration
+TMDB_API_KEY = your_api_key_here

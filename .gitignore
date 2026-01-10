@@ -1,0 +1,68 @@
+# Xcode
+DerivedData/
+*.xcuserstate
+*.xcworkspacedata
+project.xcworkspace/xcuserdata/
+xcuserdata/
+
+# Configuration files with secrets
+Config.xcconfig
+!Config.xcconfig.example
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Build products
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# CocoaPods (if ever used)
+Pods/
+Podfile.lock
+
+# Carthage (if ever used)
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code Injection
+iOSInjectionProject/
+
+# Accio dependency management
+Dependencies/
+.accio/
+
+# SwiftPM
+.swiftpm/
+
+# Xcode automatically generates this directory with a .hierarchies file
+*.xcscmblueprint
