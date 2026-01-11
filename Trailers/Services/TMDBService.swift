@@ -312,6 +312,19 @@ actor TMDBService {
         return detail
     }
 
+    /// Fetches a media summary for a single item.
+    ///
+    /// Uses the detail endpoint and converts to a lighter summary.
+    /// Useful for displaying watchlist items in the grid.
+    ///
+    /// - Parameter mediaID: The media ID to fetch
+    /// - Returns: MediaSummary for grid display
+    /// - Throws: NetworkError on failure
+    func fetchSummary(for mediaID: MediaID) async throws -> MediaSummary {
+        let detail = try await fetchDetail(for: mediaID)
+        return MediaSummary(from: detail)
+    }
+
     // MARK: - Watch Providers
 
     /// Fetches streaming/rental/purchase availability for a media item.

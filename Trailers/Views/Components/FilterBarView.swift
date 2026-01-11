@@ -31,6 +31,9 @@ struct FilterBarView: View {
     /// Filter view model.
     @ObservedObject var viewModel: FilterViewModel
 
+    /// Grid view model for watchlist toggle.
+    @ObservedObject var gridViewModel: ContentGridViewModel
+
     /// Action to perform on refresh.
     var onRefresh: () -> Void
 
@@ -123,6 +126,25 @@ struct FilterBarView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(Constants.Accessibility.clearFiltersButton)
             }
+
+            // Watchlist toggle
+            Button {
+                Task {
+                    await gridViewModel.toggleWatchlist()
+                }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: gridViewModel.showingWatchlistOnly ? "bookmark.fill" : "bookmark")
+                        .font(.title3)
+                    Text("Watchlist")
+                        .font(.caption)
+                }
+                .foregroundColor(gridViewModel.showingWatchlistOnly ?
+                    Constants.Colors.accent :
+                    Constants.Colors.textSecondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(gridViewModel.showingWatchlistOnly ? "Showing Watchlist" : "Show Watchlist")
 
             // Refresh button
             Button(action: onRefresh) {
@@ -217,7 +239,10 @@ struct FilterSummaryView: View {
 struct FilterBarView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            FilterBarView(viewModel: FilterViewModel()) {
+            FilterBarView(
+                viewModel: FilterViewModel(),
+                gridViewModel: ContentGridViewModel()
+            ) {
                 print("Refresh")
             }
 

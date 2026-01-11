@@ -160,6 +160,26 @@ struct MediaSummary: Identifiable, Hashable, Sendable {
     }
 }
 
+// MARK: - Init from MediaDetail
+
+extension MediaSummary {
+    /// Creates a summary from a detail model.
+    ///
+    /// - Parameter detail: The detail model to convert
+    init(from detail: MediaDetail) {
+        self.id = detail.id
+        self.title = detail.title
+        self.posterPath = detail.posterPath
+        self.backdropPath = detail.backdropPath
+        self.overview = detail.overview
+        self.releaseDate = detail.releaseDate
+        self.voteAverage = detail.voteAverage
+        self.voteCount = detail.voteCount
+        self.genreIDs = detail.genres.map { $0.id }
+        self.popularity = detail.popularity
+    }
+}
+
 // MARK: - Codable
 
 extension MediaSummary: Codable {}

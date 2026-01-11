@@ -128,6 +128,9 @@ final class ContentGridViewModel: ObservableObject {
     /// Current filter state being applied.
     @Published private(set) var currentFilters = FilterState()
 
+    /// Whether showing only watchlist items.
+    @Published var showingWatchlistOnly = false
+
     // MARK: - Private Properties
 
     /// TMDB service for fetching content.
@@ -442,10 +445,81 @@ final class ContentGridViewModel: ObservableObject {
 
         currentFilters = filterState
 
+        // Exit watchlist mode when filters change
+        if showingWatchlistOnly {
+            showingWatchlistOnly = false
+        }
+
         // Cancel and reload
         Task {
             await loadInitial()
         }
+    }
+
+    // MARK: - Watchlist Mode
+
+    /// Toggles watchlist-only mode.
+    func toggleWatchlist() async {
+        showingWatchlistOnly.toggle()
+
+        if showingWatchlistOnly {
+            await loadWatchlistItems()
+        } else {
+            await loadInitial(force: true)
+        }
+    }
+
+    /// Loads watchlist items and fetches their summaries.
+    private func loadWatchlistItems() async {
+        // Cancel any existing task
+        activeTask?.cancel()
+        activeTask = nil
+
+        resetPagination()
+        state = .loadingInitial
+
+        Log.pagination.info("Loading watchlist items")
+
+        activeTask = Task {
+            // Fetch watchlist from server
+            let watchlistItems = await WatchlistService.shared.fetchWatchlist()
+
+            guard !Task.isCancelled else { return }
+
+            if watchlistItems.isEmpty {
+                state = .empty
+                return
+            }
+
+            // Fetch summaries for each watchlist item
+            var summaries: [MediaSummary] = []
+
+            for item in watchlistItems {
+                guard !Task.isCancelled else { return }
+
+                do {
+                    let mediaID = item.mediaID
+                    let summary = try await tmdbService.fetchSummary(for: mediaID)
+                    summaries.append(summary)
+                } catch {
+                    // Skip items that fail to load
+                    Log.pagination.debug("Failed to load watchlist item \(item.mediaTitle): \(error.localizedDescription)")
+                }
+            }
+
+            guard !Task.isCancelled else { return }
+
+            if summaries.isEmpty {
+                state = .empty
+            } else {
+                items = summaries
+                state = .exhausted // No pagination for watchlist
+            }
+
+            Log.pagination.info("Loaded \(summaries.count) watchlist items")
+        }
+
+        await activeTask?.value
     }
 
     // MARK: - Private Helpers

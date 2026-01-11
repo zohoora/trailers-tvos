@@ -21,6 +21,7 @@ import Foundation
 /// // Check if watched
 /// let watched = WatchHistoryService.shared.hasWatched(mediaID)
 /// ```
+@MainActor
 final class WatchHistoryService: ObservableObject {
 
     // MARK: - Singleton

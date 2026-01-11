@@ -148,14 +148,15 @@ struct PosterCardView: View {
     private var watchedBadge: some View {
         if isWatched {
             Image(systemName: "eye.fill")
-                .font(.system(size: 14, weight: .bold))
+                .font(.system(size: 28, weight: .bold))
                 .foregroundColor(.white)
-                .padding(6)
+                .padding(14)
                 .background(
                     Circle()
-                        .fill(Color.black.opacity(0.7))
+                        .fill(Constants.Colors.accent.opacity(0.9))
+                        .shadow(color: .black.opacity(0.4), radius: 4, x: 0, y: 2)
                 )
-                .padding(8)
+                .padding(10)
         }
     }
 

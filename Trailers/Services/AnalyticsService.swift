@@ -3,6 +3,15 @@
 // Analytics logging service for viewing behavior tracking
 
 import Foundation
+import UIKit
+
+/// Helper to get device ID on main actor.
+@MainActor
+private enum AnalyticsDeviceIDProvider {
+    static var deviceID: String {
+        UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+    }
+}
 
 /// Service for logging viewing analytics to the local server.
 ///
@@ -34,8 +43,20 @@ actor AnalyticsService {
     /// Current session ID (generated once per app launch).
     private let sessionID: String
 
-    /// Device identifier for analytics.
-    private let deviceID: String
+    /// Device identifier for analytics (lazily initialized).
+    private var _deviceID: String?
+
+    /// Gets the device ID, initializing it on first access.
+    private var deviceID: String {
+        get async {
+            if let id = _deviceID {
+                return id
+            }
+            let id = await AnalyticsDeviceIDProvider.deviceID
+            _deviceID = id
+            return id
+        }
+    }
 
     /// Timestamp when session started.
     private let sessionStartTime: Date
@@ -44,7 +65,6 @@ actor AnalyticsService {
 
     private init() {
         self.sessionID = UUID().uuidString
-        self.deviceID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
         self.sessionStartTime = Date()
 
         // Register session with server
@@ -64,9 +84,10 @@ actor AnalyticsService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
+        let id = await deviceID
         let payload: [String: Any] = [
             "session_id": sessionID,
-            "device_id": deviceID,
+            "device_id": id,
             "app_version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
             "platform": "tvOS",
             "timestamp": ISO8601DateFormatter().string(from: sessionStartTime)
@@ -182,9 +203,10 @@ actor AnalyticsService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
+        let id = await deviceID
         var payload: [String: Any] = [
             "session_id": sessionID,
-            "device_id": deviceID,
+            "device_id": id,
             "event_type": eventType,
             "timestamp": ISO8601DateFormatter().string(from: Date()),
             "video": [
@@ -247,8 +269,3 @@ actor AnalyticsService {
     }
 }
 
-// MARK: - UIDevice Extension for tvOS
-
-#if os(tvOS)
-import UIKit
-#endif

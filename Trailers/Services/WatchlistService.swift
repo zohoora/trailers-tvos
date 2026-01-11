@@ -5,6 +5,14 @@
 import Foundation
 import UIKit
 
+/// Helper to get device ID on main actor.
+@MainActor
+private enum DeviceIDProvider {
+    static var deviceID: String {
+        UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+    }
+}
+
 /// Service for managing the user's watchlist via the local server.
 ///
 /// ## Overview
@@ -25,14 +33,24 @@ actor WatchlistService {
 
     // MARK: - Properties
 
-    /// Device identifier for per-device watchlists.
-    private let deviceID: String
+    /// Device identifier for per-device watchlists (lazily initialized).
+    private var _deviceID: String?
+
+    /// Gets the device ID, initializing it on first access.
+    private var deviceID: String {
+        get async {
+            if let id = _deviceID {
+                return id
+            }
+            let id = await DeviceIDProvider.deviceID
+            _deviceID = id
+            return id
+        }
+    }
 
     // MARK: - Initialization
 
-    private init() {
-        self.deviceID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
-    }
+    private init() {}
 
     // MARK: - Public Methods
 
@@ -43,8 +61,9 @@ actor WatchlistService {
     func isOnWatchlist(mediaID: MediaID) async -> Bool {
         let serverURL = Config.youtubeServerURL
         let mediaType = mediaID.type == .movie ? "movie" : "tv"
+        let id = await deviceID
 
-        guard let url = URL(string: "\(serverURL)/watchlist/check/\(mediaType)/\(mediaID.id)?device_id=\(deviceID)") else {
+        guard let url = URL(string: "\(serverURL)/watchlist/check/\(mediaType)/\(mediaID.id)?device_id=\(id)") else {
             return false
         }
 
@@ -84,11 +103,12 @@ actor WatchlistService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
+        let id = await deviceID
         let payload: [String: Any] = [
             "media_id": mediaID.id,
             "media_type": mediaID.type == .movie ? "movie" : "tv",
             "media_title": title,
-            "device_id": deviceID
+            "device_id": id
         ]
 
         do {
@@ -121,8 +141,9 @@ actor WatchlistService {
     func removeFromWatchlist(mediaID: MediaID) async -> Bool {
         let serverURL = Config.youtubeServerURL
         let mediaType = mediaID.type == .movie ? "movie" : "tv"
+        let id = await deviceID
 
-        guard let url = URL(string: "\(serverURL)/watchlist/\(mediaType)/\(mediaID.id)?device_id=\(deviceID)") else {
+        guard let url = URL(string: "\(serverURL)/watchlist/\(mediaType)/\(mediaID.id)?device_id=\(id)") else {
             return false
         }
 
@@ -149,5 +170,72 @@ actor WatchlistService {
             print("[Watchlist] Failed to remove: \(error.localizedDescription)")
             return false
         }
+    }
+
+    /// Fetches all items on the watchlist.
+    ///
+    /// - Returns: Array of watchlist items, empty if none or on error
+    func fetchWatchlist() async -> [WatchlistItem] {
+        let serverURL = Config.youtubeServerURL
+        let id = await deviceID
+        guard let url = URL(string: "\(serverURL)/watchlist/list?device_id=\(id)") else {
+            return []
+        }
+
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                return []
+            }
+
+            let result = try JSONDecoder().decode(WatchlistResponse.self, from: data)
+            print("[Watchlist] Fetched \(result.items.count) items")
+            return result.items
+        } catch {
+            print("[Watchlist] Failed to fetch list: \(error.localizedDescription)")
+            return []
+        }
+    }
+}
+
+// MARK: - Watchlist Models
+
+/// Response from the watchlist list endpoint.
+struct WatchlistResponse: Decodable {
+    let totalItems: Int
+    let deviceId: String
+    let items: [WatchlistItem]
+
+    enum CodingKeys: String, CodingKey {
+        case totalItems = "total_items"
+        case deviceId = "device_id"
+        case items
+    }
+}
+
+/// A single item on the watchlist.
+struct WatchlistItem: Identifiable, Decodable, Sendable, Hashable {
+    let mediaId: Int
+    let mediaType: String
+    let mediaTitle: String
+    let addedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case mediaId = "media_id"
+        case mediaType = "media_type"
+        case mediaTitle = "media_title"
+        case addedAt = "added_at"
+    }
+
+    /// Unique identifier for the item.
+    var id: String {
+        "\(mediaType)_\(mediaId)"
+    }
+
+    /// Converts to MediaID for navigation.
+    var mediaID: MediaID {
+        MediaID(type: mediaType == "movie" ? .movie : .tv, id: mediaId)
     }
 }

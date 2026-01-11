@@ -75,7 +75,10 @@ struct BrowseView: View {
 
                 VStack(spacing: 0) {
                     // Filter bar
-                    FilterBarView(viewModel: filterViewModel) {
+                    FilterBarView(
+                        viewModel: filterViewModel,
+                        gridViewModel: gridViewModel
+                    ) {
                         Task {
                             await gridViewModel.refresh()
                         }

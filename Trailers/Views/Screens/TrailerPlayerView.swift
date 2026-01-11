@@ -45,6 +45,9 @@ struct TrailerPlayerView: View {
     /// Playback coordinator for analytics tracking.
     @State private var playbackCoordinator: PlaybackCoordinator?
 
+    /// Flag to prevent duplicate load attempts.
+    @State private var hasStartedLoading = false
+
     // MARK: - Body
 
     var body: some View {
@@ -89,6 +92,13 @@ struct TrailerPlayerView: View {
 
     /// Fetches the direct video URL from the local yt-dlp server and creates the player.
     private func loadVideoStream() async {
+        // Prevent duplicate load attempts from SwiftUI view lifecycle
+        guard !hasStartedLoading else {
+            print("[TrailerPlayer] Ignoring duplicate load attempt")
+            return
+        }
+        hasStartedLoading = true
+
         guard video.isYouTube else {
             errorMessage = "This video cannot be played in the app."
             isLoading = false
@@ -271,10 +281,12 @@ final class PlaybackCoordinator: ObservableObject, @unchecked Sendable {
 
         // Set up time observer to get duration
         let interval = CMTime(seconds: 1.0, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
-            guard let self = self else { return }
-            if let duration = player.currentItem?.duration, duration.isNumeric {
-                self.totalDuration = CMTimeGetSeconds(duration)
+        timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] _ in
+            Task { @MainActor in
+                guard let self = self else { return }
+                if let duration = self.player?.currentItem?.duration, duration.isNumeric {
+                    self.totalDuration = CMTimeGetSeconds(duration)
+                }
             }
         }
     }
@@ -345,7 +357,7 @@ struct AVPlayerViewControllerRepresentable: UIViewControllerRepresentable {
 
     // MARK: - Coordinator for KVO
 
-    class Coordinator: NSObject {
+    class Coordinator: NSObject, @unchecked Sendable {
         private var statusObservation: NSKeyValueObservation?
         private weak var player: AVPlayer?
         private var playbackCoordinator: PlaybackCoordinator?
