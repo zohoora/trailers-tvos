@@ -312,6 +312,41 @@ actor TMDBService {
         return detail
     }
 
+    // MARK: - Watch Providers
+
+    /// Fetches streaming/rental/purchase availability for a media item.
+    ///
+    /// Uses TMDB's watch/providers endpoint powered by JustWatch data.
+    /// Returns availability for Canada (CA) by default.
+    ///
+    /// - Parameters:
+    ///   - mediaID: The media ID to check
+    ///   - countryCode: ISO-3166-1 country code (default: "CA")
+    /// - Returns: Watch providers result with streaming, rent, and buy options
+    /// - Throws: NetworkError on failure
+    func fetchWatchProviders(
+        for mediaID: MediaID,
+        countryCode: String = "CA"
+    ) async throws -> WatchProvidersResult {
+        let path = "\(mediaID.type.detailPath(id: mediaID.id))/watch/providers"
+
+        let response = try await networkClient.fetch(
+            TMDBWatchProvidersResponseDTO.self,
+            from: path
+        )
+
+        // Get providers for the specified country
+        guard let countryData = response.results[countryCode] else {
+            Log.network.info("No watch providers for \(mediaID) in \(countryCode)")
+            return .empty
+        }
+
+        let result = countryData.toWatchProvidersResult()
+        Log.network.info("Found \(result.streaming.count) streaming providers for \(mediaID)")
+
+        return result
+    }
+
     // MARK: - Genres
 
     /// Fetches genre list for a media type.

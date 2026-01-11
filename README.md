@@ -1,16 +1,27 @@
 # Trailers - tvOS App
 
-A native **tvOS 17+** app that displays a poster grid of movies and TV shows from TMDB, with filtering and sorting capabilities, and plays trailers via the YouTube tvOS app.
+A native **tvOS 17+** app that displays a poster grid of movies and TV shows from TMDB, with filtering and sorting capabilities, and plays trailers via an in-app video player.
 
 ## Features
 
+### Core Features
 - **Poster Grid**: Browse current movies and TV shows in a visually appealing grid layout
 - **Filtering**: Filter by content type, genre, release date, and certification
 - **Sorting**: Sort by trending, popularity, release date, or rating
 - **Detail View**: View full media information including ratings, runtime, and overview
-- **YouTube Integration**: Play trailers directly in the YouTube app via Universal Links
 - **Offline Support**: Cached content available when offline
 - **Accessibility**: Full VoiceOver support and Reduce Motion compatibility
+
+### Trailer Playback
+- **In-App Player**: Native AVPlayer with full Siri Remote support (play/pause, scrub, skip)
+- **Local yt-dlp Server**: Python server extracts YouTube stream URLs for direct playback
+- **Watch History**: Eye icon indicator on grid shows previously watched trailers
+- **Analytics**: Playback events logged for future recommendations
+
+### Additional Features
+- **Watchlist**: Save movies/shows to a server-side watchlist with visual indicators
+- **Where to Watch**: See streaming availability (Netflix, Disney+, Crave, Prime, etc.) with tappable icons that open the streaming app
+- **Multiple Trailers**: Browse and select from all available trailers for a title
 
 ## Requirements
 
@@ -19,6 +30,7 @@ A native **tvOS 17+** app that displays a poster grid of movies and TV shows fro
 - Swift 5.9+
 - Apple TV HD or Apple TV 4K
 - TMDB API Key (free)
+- Python 3.8+ with yt-dlp (for trailer playback server)
 
 ## Getting Started
 
@@ -43,13 +55,35 @@ cd trailers-tvos
 
 3. Get your API Key from [TMDB API Settings](https://www.themoviedb.org/settings/api) (it's the "API Key" not the "Read Access Token").
 
-### 3. Open in Xcode
+### 3. Set Up the yt-dlp Server
+
+The app requires a local Python server to stream YouTube trailers.
+
+```bash
+# Create virtual environment
+cd Server
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install flask yt-dlp
+
+# Start the server
+python yt_server.py
+```
+
+The server runs at `http://localhost:8080` and provides:
+- `/stream/<video_id>` - Stream YouTube videos
+- `/watchlist/*` - Watchlist management
+- `/analytics/*` - Playback analytics
+
+### 4. Open in Xcode
 
 ```bash
 open Trailers.xcodeproj
 ```
 
-### 4. Build and Run
+### 5. Build and Run
 
 - Select your Apple TV device or simulator
 - Press Cmd+R to build and run
@@ -110,6 +144,10 @@ open Trailers.xcodeproj
 - `NetworkMonitor` - NWPathMonitor wrapper
 - `ImagePipeline` - Image loading configuration
 - `YouTubeLauncher` - YouTube Universal Link handler
+- `AnalyticsService` - Playback analytics tracking
+- `WatchlistService` - Server-side watchlist management
+- `WatchHistoryService` - Local watch history tracking
+- `StreamingLauncher` - Deep links to streaming apps
 
 #### ViewModels
 - `FilterViewModel` - Filter state and genre management
@@ -118,9 +156,10 @@ open Trailers.xcodeproj
 
 #### Views
 - `BrowseView` - Main grid screen
-- `DetailView` - Media detail screen
+- `DetailView` - Media detail screen with watchlist and streaming info
+- `TrailerPlayerView` - In-app AVPlayer-based trailer player
 - `TrailerSelectorView` - Multiple trailer selection
-- `PosterCardView` - Grid poster card
+- `PosterCardView` - Grid poster card with watch history indicator
 - `FilterBarView` - Filter controls
 - `LoadingFooterView` / `EmptyStateView` - State views
 
@@ -144,6 +183,7 @@ Offline mode returns expired cache entries with an "Offline" badge.
 
 ## API Endpoints Used
 
+### TMDB API
 - `/trending/movie/week` - Trending movies
 - `/trending/tv/week` - Trending TV shows
 - `/trending/all/week` - All trending (filters people)
@@ -151,8 +191,18 @@ Offline mode returns expired cache entries with an "Offline" badge.
 - `/discover/tv` - TV discovery with filters
 - `/movie/{id}` - Movie details with videos
 - `/tv/{id}` - TV details with videos
+- `/movie/{id}/watch/providers` - Streaming availability
+- `/tv/{id}/watch/providers` - Streaming availability
 - `/genre/movie/list` - Movie genres
 - `/genre/tv/list` - TV genres
+
+### Local Server API
+- `GET /stream/<video_id>` - Get YouTube stream URL
+- `POST /watchlist/add` - Add to watchlist
+- `DELETE /watchlist/<type>/<id>` - Remove from watchlist
+- `GET /watchlist/check/<type>/<id>` - Check watchlist status
+- `POST /analytics/event` - Log playback event
+- `POST /analytics/session` - Log session end
 
 ## Testing
 
@@ -200,6 +250,11 @@ This app uses data from [The Movie Database (TMDB)](https://www.themoviedb.org/)
 ## Project Structure
 
 ```
+Server/
+├── yt_server.py          # Flask server for streaming/watchlist/analytics
+├── analytics/            # Playback event logs (JSONL)
+└── data/                 # Watchlist storage (JSONL)
+
 Trailers/
 ├── App/
 │   └── TrailersApp.swift
@@ -216,7 +271,8 @@ Trailers/
 │   │   ├── MediaDetail.swift
 │   │   ├── Genre.swift
 │   │   ├── Video.swift
-│   │   └── FilterState.swift
+│   │   ├── FilterState.swift
+│   │   └── WatchProvider.swift
 │   └── DTO/
 │       ├── TMDBPaginatedDTO.swift
 │       ├── TMDBMovieListDTO.swift
@@ -225,14 +281,19 @@ Trailers/
 │       ├── TMDBMovieDetailDTO.swift
 │       ├── TMDBTVDetailDTO.swift
 │       ├── TMDBGenreListDTO.swift
-│       └── TMDBVideoDTO.swift
+│       ├── TMDBVideoDTO.swift
+│       └── TMDBWatchProviderDTO.swift
 ├── Services/
 │   ├── NetworkClient.swift
 │   ├── TMDBService.swift
 │   ├── ResponseCache.swift
 │   ├── NetworkMonitor.swift
 │   ├── ImagePipeline.swift
-│   └── YouTubeLauncher.swift
+│   ├── YouTubeLauncher.swift
+│   ├── AnalyticsService.swift
+│   ├── WatchlistService.swift
+│   ├── WatchHistoryService.swift
+│   └── StreamingLauncher.swift
 ├── ViewModels/
 │   ├── FilterViewModel.swift
 │   ├── ContentGridViewModel.swift
@@ -246,6 +307,7 @@ Trailers/
 │   │   └── LoadingFooterView.swift
 │   └── Screens/
 │       ├── DetailView.swift
+│       ├── TrailerPlayerView.swift
 │       ├── TrailerSelectorView.swift
 │       └── ErrorOverlayView.swift
 └── Tests/

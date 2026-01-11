@@ -66,3 +66,8 @@ Dependencies/
 
 # Xcode automatically generates this directory with a .hierarchies file
 *.xcscmblueprint
+
+# Server runtime data
+Server/analytics/
+Server/data/
+Server/venv/

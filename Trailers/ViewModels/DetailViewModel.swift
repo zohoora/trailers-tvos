@@ -87,6 +87,15 @@ final class DetailViewModel: ObservableObject {
     /// All available trailers (ranked).
     @Published private(set) var trailers: [Video] = []
 
+    /// Whether this media is on the user's watchlist.
+    @Published private(set) var isOnWatchlist: Bool = false
+
+    /// Whether a watchlist update is in progress.
+    @Published private(set) var isUpdatingWatchlist: Bool = false
+
+    /// Streaming/rental/purchase providers for this media.
+    @Published private(set) var watchProviders: WatchProvidersResult = .empty
+
     // MARK: - Private Properties
 
     /// TMDB service for fetching detail.
@@ -284,5 +293,64 @@ extension DetailViewModel {
         trailers = []
         mediaID = nil
         fallbackSummary = nil
+        isOnWatchlist = false
+        watchProviders = .empty
+    }
+}
+
+// MARK: - Watchlist
+
+extension DetailViewModel {
+
+    /// Checks if the current media is on the watchlist.
+    func checkWatchlistStatus() async {
+        guard let id = mediaID else { return }
+
+        let onWatchlist = await WatchlistService.shared.isOnWatchlist(mediaID: id)
+        self.isOnWatchlist = onWatchlist
+    }
+
+    /// Toggles the watchlist status for the current media.
+    func toggleWatchlist() async {
+        guard let id = mediaID else { return }
+
+        isUpdatingWatchlist = true
+
+        let title = detail?.title ?? fallbackSummary?.title ?? "Unknown"
+
+        if isOnWatchlist {
+            // Remove from watchlist
+            let success = await WatchlistService.shared.removeFromWatchlist(mediaID: id)
+            if success {
+                isOnWatchlist = false
+            }
+        } else {
+            // Add to watchlist
+            let success = await WatchlistService.shared.addToWatchlist(mediaID: id, title: title)
+            if success {
+                isOnWatchlist = true
+            }
+        }
+
+        isUpdatingWatchlist = false
+    }
+}
+
+// MARK: - Watch Providers
+
+extension DetailViewModel {
+
+    /// Fetches streaming/rental/purchase availability.
+    func fetchWatchProviders() async {
+        guard let id = mediaID else { return }
+
+        do {
+            let providers = try await tmdbService.fetchWatchProviders(for: id)
+            self.watchProviders = providers
+        } catch {
+            // Non-fatal: just means we won't show streaming providers
+            Log.ui.warning("Failed to fetch watch providers: \(error.localizedDescription)")
+            self.watchProviders = .empty
+        }
     }
 }

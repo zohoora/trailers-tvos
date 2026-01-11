@@ -190,7 +190,13 @@ final class ContentGridViewModel: ObservableObject {
     /// Loads initial content for the current filter state.
     ///
     /// Cancels any existing load task and resets pagination.
-    func loadInitial() async {
+    /// - Parameter force: If true, reloads even if content already exists
+    func loadInitial(force: Bool = false) async {
+        // Skip if already loaded (prevents reload when returning from detail)
+        if !force && state.hasContent && !items.isEmpty {
+            return
+        }
+
         // Cancel any existing task
         activeTask?.cancel()
         activeTask = nil

@@ -7,10 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8UNDCG2G71JQ8Y9QZAI4LKB /* WatchHistoryService.swift */; };
+		M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = LHHSHP0S5KDXEEAEFU7HF91P /* StreamingLauncher.swift */; };
+		RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2UW2LMHBYC27J4GL6R1CNMT /* TMDBWatchProviderDTO.swift */; };
+		H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = W5XKKVSYG0XKCJVHSCKPW7MJ /* WatchProvider.swift */; };
 		0457BDCCA58B07AF17F98352 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE77F733B67DA943730CCABE /* Constants.swift */; };
 		0DCA6439F15FD8730E480F0F /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 312C29DF4075A7B685379A62 /* Nuke */; };
 		11DA34ECF7C1A74F2B6202F4 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645C8078D527C6D591BB7B66 /* Genre.swift */; };
 		136939ED0EBA36147A88B3F3 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7521E7C1CD2C008236CBD /* NetworkClient.swift */; };
+		B2D951088015B4C3A568E894 /* WatchlistService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523A7F1309B36E1DC8E6B1C7 /* WatchlistService.swift */; };
+		73325A8F7464DED9575CFBB6 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E54DD0327CA0309DF78FC3C /* AnalyticsService.swift */; };
 		1B70D27BE29CE285C15446FB /* TrailerPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77BC684D8E0AC4C7356D45F /* TrailerPlayerView.swift */; };
 		1DA08DD1BD2E2CAACE6F8CEE /* FilterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390F3F9A65F61B8AE8C16A90 /* FilterStateTests.swift */; };
 		23D27098E530FD2A4123DAF1 /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0B05BEF7E850882290DC8 /* MediaSummary.swift */; };
@@ -72,6 +78,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D8UNDCG2G71JQ8Y9QZAI4LKB /* WatchHistoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHistoryService.swift; sourceTree = "<group>"; };
+		LHHSHP0S5KDXEEAEFU7HF91P /* StreamingLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingLauncher.swift; sourceTree = "<group>"; };
+		E2UW2LMHBYC27J4GL6R1CNMT /* TMDBWatchProviderDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBWatchProviderDTO.swift; sourceTree = "<group>"; };
+		W5XKKVSYG0XKCJVHSCKPW7MJ /* WatchProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProvider.swift; sourceTree = "<group>"; };
 		03869622C7829BE82A60538F /* ImagePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePipeline.swift; sourceTree = "<group>"; };
 		0D9D96BF070662EDE8A1339A /* TrailersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrailersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1736AD81CBF20D6ECD78E81A /* TMDBMovieDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBMovieDetailDTO.swift; sourceTree = "<group>"; };
@@ -93,6 +103,8 @@
 		5C59A911E81517CF1A9B07D2 /* MediaDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetail.swift; sourceTree = "<group>"; };
 		645C8078D527C6D591BB7B66 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		65E7521E7C1CD2C008236CBD /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		523A7F1309B36E1DC8E6B1C7 /* WatchlistService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistService.swift; sourceTree = "<group>"; };
+		9E54DD0327CA0309DF78FC3C /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		6B890316681F8B8DB78F9637 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		6CF6DE080C9D5D568CA9B9CE /* DTODecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTODecodingTests.swift; sourceTree = "<group>"; };
 		7AABCE4A505A3742018A01F7 /* TMDBTVDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTVDetailDTO.swift; sourceTree = "<group>"; };
@@ -208,8 +220,12 @@
 		83D3272BAAFB4FB001B78E50 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D8UNDCG2G71JQ8Y9QZAI4LKB /* WatchHistoryService.swift */,
+				LHHSHP0S5KDXEEAEFU7HF91P /* StreamingLauncher.swift */,
 				03869622C7829BE82A60538F /* ImagePipeline.swift */,
 				65E7521E7C1CD2C008236CBD /* NetworkClient.swift */,
+				523A7F1309B36E1DC8E6B1C7 /* WatchlistService.swift */,
+				9E54DD0327CA0309DF78FC3C /* AnalyticsService.swift */,
 				4741D7AA3D6EB10EDA38909F /* NetworkMonitor.swift */,
 				C78CD47B2DF970BB451AF3CC /* ResponseCache.swift */,
 				CF5A614A8F365D14FFE43CE1 /* TMDBService.swift */,
@@ -242,6 +258,7 @@
 		9D64CA9017916943DD91C8C7 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				E2UW2LMHBYC27J4GL6R1CNMT /* TMDBWatchProviderDTO.swift */,
 				A01EF2072A43628AB8E0A289 /* TMDBGenreListDTO.swift */,
 				1736AD81CBF20D6ECD78E81A /* TMDBMovieDetailDTO.swift */,
 				9C28BC33070F48C513BF2B82 /* TMDBMovieListDTO.swift */,
@@ -267,6 +284,7 @@
 		A80CEB515B5DB87C72272647 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				W5XKKVSYG0XKCJVHSCKPW7MJ /* WatchProvider.swift */,
 				3387467D0AD2CE46CE014326 /* FilterState.swift */,
 				645C8078D527C6D591BB7B66 /* Genre.swift */,
 				5C59A911E81517CF1A9B07D2 /* MediaDetail.swift */,
@@ -441,6 +459,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */,
+				M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */,
+				RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */,
+				H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */,
 				810A2B6B56D0025A7AFB277A /* BrowseView.swift in Sources */,
 				4321D6A7FF3CB7EFD6000CCE /* Config.swift in Sources */,
 				0457BDCCA58B07AF17F98352 /* Constants.swift in Sources */,
@@ -461,6 +483,8 @@
 				23D27098E530FD2A4123DAF1 /* MediaSummary.swift in Sources */,
 				BDC368B7BB01F2DE1A2D8D47 /* MediaType.swift in Sources */,
 				136939ED0EBA36147A88B3F3 /* NetworkClient.swift in Sources */,
+				B2D951088015B4C3A568E894 /* WatchlistService.swift in Sources */,
+				73325A8F7464DED9575CFBB6 /* AnalyticsService.swift in Sources */,
 				B59B2D360B28B73CB428262A /* NetworkMonitor.swift in Sources */,
 				C517760B37DD36F756680174 /* PosterCardView.swift in Sources */,
 				4D367620800D96E52D7B65B6 /* ResponseCache.swift in Sources */,
@@ -485,6 +509,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */,
+				M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */,
+				RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */,
+				H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */,
 				8C325D6B8CACB2EBD1D264EF /* BrowseViewUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,6 +521,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */,
+				M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */,
+				RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */,
+				H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */,
 				F51E68F3CB8401FED0CCDD79 /* DTODecodingTests.swift in Sources */,
 				CC62812BF93450021BFD20D2 /* DateUtilsTests.swift in Sources */,
 				1DA08DD1BD2E2CAACE6F8CEE /* FilterStateTests.swift in Sources */,

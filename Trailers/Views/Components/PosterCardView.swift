@@ -39,6 +39,14 @@ struct PosterCardView: View {
     /// Environment value for reduced motion preference.
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Watch history service for checking viewed status.
+    @ObservedObject private var watchHistory = WatchHistoryService.shared
+
+    /// Whether this item's trailer has been watched.
+    private var isWatched: Bool {
+        watchHistory.hasWatched(item.id)
+    }
+
     // MARK: - Body
 
     var body: some View {
@@ -51,6 +59,7 @@ struct PosterCardView: View {
                 )
                 .clipShape(RoundedRectangle(cornerRadius: Constants.Layout.posterCornerRadius))
                 .overlay(focusBorder)
+                .overlay(watchedBadge, alignment: .topTrailing)
                 .shadow(
                     color: isFocused ? Constants.Colors.focusGlow : .clear,
                     radius: isFocused ? Constants.Layout.posterShadowRadius : 0
@@ -131,6 +140,22 @@ struct PosterCardView: View {
         if reduceMotion && isFocused {
             RoundedRectangle(cornerRadius: Constants.Layout.posterCornerRadius)
                 .strokeBorder(Constants.Colors.accent, lineWidth: 4)
+        }
+    }
+
+    /// Watched indicator badge overlay.
+    @ViewBuilder
+    private var watchedBadge: some View {
+        if isWatched {
+            Image(systemName: "eye.fill")
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(.white)
+                .padding(6)
+                .background(
+                    Circle()
+                        .fill(Color.black.opacity(0.7))
+                )
+                .padding(8)
         }
     }
 

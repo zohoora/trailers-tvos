@@ -47,6 +47,15 @@ struct BrowseView: View {
     /// Currently focused item ID.
     @FocusState private var focusedItemID: MediaID?
 
+    /// Stored ID for focus restoration after navigation.
+    @State private var savedFocusID: MediaID?
+
+    /// Flag to trigger focus restoration.
+    @State private var shouldRestoreFocus = false
+
+    /// Focus namespace for controlling default focus.
+    @Namespace private var gridNamespace
+
     // MARK: - Initialization
 
     init() {
@@ -75,6 +84,7 @@ struct BrowseView: View {
                     // Content area
                     contentView
                 }
+                .focusScope(gridNamespace)
 
                 // Offline badge
                 if networkMonitor.isOffline {
@@ -104,6 +114,15 @@ struct BrowseView: View {
             .onChange(of: focusedItemID) { _, newValue in
                 if let id = newValue, let index = gridViewModel.index(of: id) {
                     gridViewModel.loadNextPageIfNeeded(focusedIndex: index)
+                }
+            }
+            .onChange(of: navigationPath.count) { oldCount, newCount in
+                if newCount > oldCount {
+                    // Navigating to detail - save current focus
+                    savedFocusID = focusedItemID
+                } else if newCount == 0 && oldCount > 0 {
+                    // Returning from detail - trigger focus restoration
+                    shouldRestoreFocus = true
                 }
             }
         }
@@ -139,36 +158,54 @@ struct BrowseView: View {
 
     /// The poster grid view.
     private var gridView: some View {
-        ScrollView {
-            LazyVGrid(
-                columns: gridColumns,
-                spacing: Constants.Layout.gridSpacing
-            ) {
-                ForEach(gridViewModel.items) { item in
-                    Button {
-                        navigationPath.append(item.id)
-                    } label: {
-                        PosterCardView(item: item)
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVGrid(
+                    columns: gridColumns,
+                    spacing: Constants.Layout.gridSpacing
+                ) {
+                    ForEach(gridViewModel.items) { item in
+                        Button {
+                            navigationPath.append(item.id)
+                        } label: {
+                            PosterCardView(item: item)
+                        }
+                        .buttonStyle(PosterButtonStyle())
+                        .id(item.id)
+                        .focused($focusedItemID, equals: item.id)
+                        .prefersDefaultFocus(
+                            // Prefer focus if: restoring to this item, OR this is first item and no saved focus
+                            (item.id == savedFocusID && shouldRestoreFocus) ||
+                            (savedFocusID == nil && item.id == gridViewModel.items.first?.id),
+                            in: gridNamespace
+                        )
                     }
-                    .buttonStyle(PosterButtonStyle())
-                    .id(item.id)
-                    .focused($focusedItemID, equals: item.id)
-                }
 
-                // Loading footer
-                if gridViewModel.isLoadingMore {
-                    LoadingFooterView()
-                        .gridCellColumns(Config.gridColumns)
-                }
+                    // Loading footer
+                    if gridViewModel.isLoadingMore {
+                        LoadingFooterView()
+                            .gridCellColumns(Config.gridColumns)
+                    }
 
-                // End of content indicator
-                if gridViewModel.isExhausted && gridViewModel.itemCount > 0 {
-                    endOfContentView
-                        .gridCellColumns(Config.gridColumns)
+                    // End of content indicator
+                    if gridViewModel.isExhausted && gridViewModel.itemCount > 0 {
+                        endOfContentView
+                            .gridCellColumns(Config.gridColumns)
+                    }
+                }
+                .padding(.horizontal, Constants.Layout.gridHorizontalPadding)
+                .padding(.vertical, Constants.Layout.gridVerticalPadding)
+            }
+            .onChange(of: shouldRestoreFocus) { _, shouldRestore in
+                // Scroll to saved item when returning from detail
+                if shouldRestore, let id = savedFocusID {
+                    proxy.scrollTo(id, anchor: .center)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        focusedItemID = id
+                        shouldRestoreFocus = false
+                    }
                 }
             }
-            .padding(.horizontal, Constants.Layout.gridHorizontalPadding)
-            .padding(.vertical, Constants.Layout.gridVerticalPadding)
         }
     }
 

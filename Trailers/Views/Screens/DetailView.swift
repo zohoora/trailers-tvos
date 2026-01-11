@@ -43,6 +43,12 @@ struct DetailView: View {
     /// Whether the trailer player is showing.
     @State private var showingTrailerPlayer = false
 
+    /// Focus namespace for default focus on play button.
+    @Namespace private var detailNamespace
+
+    /// Focus state for explicit button focus control.
+    @FocusState private var isPlayButtonFocused: Bool
+
     // MARK: - Body
 
     var body: some View {
@@ -60,12 +66,6 @@ struct DetailView: View {
             }
             .padding(60)
 
-            // Close button
-            closeButton
-
-            // TMDB attribution
-            tmdbAttribution
-
             // Loading overlay
             if viewModel.state.isLoading {
                 LoadingOverlay()
@@ -80,13 +80,21 @@ struct DetailView: View {
                 }
             }
         }
+        .focusScope(detailNamespace)
         .ignoresSafeArea()
         .task {
             await viewModel.load(id: mediaID, fallback: summary)
+            await viewModel.checkWatchlistStatus()
+            await viewModel.fetchWatchProviders()
+            isPlayButtonFocused = true
         }
         .fullScreenCover(isPresented: $showingTrailerPlayer) {
             if let trailer = viewModel.selectedTrailer {
-                TrailerPlayerView(video: trailer) {
+                TrailerPlayerView(
+                    video: trailer,
+                    mediaTitle: viewModel.detail?.title ?? summary?.title ?? "Unknown",
+                    mediaID: mediaID
+                ) {
                     showingTrailerPlayer = false
                 }
             }
@@ -145,11 +153,24 @@ struct DetailView: View {
     /// Right-side info view.
     private var infoView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Title
-            Text(viewModel.detail?.title ?? summary?.title ?? "")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(Constants.Colors.textPrimary)
+            // Title with watchlist badge
+            HStack(alignment: .firstTextBaseline, spacing: 12) {
+                Text(viewModel.detail?.title ?? summary?.title ?? "")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(Constants.Colors.textPrimary)
+
+                // Watchlist badge
+                if viewModel.isOnWatchlist {
+                    Label("Watchlist", systemImage: "bookmark.fill")
+                        .font(.caption)
+                        .foregroundColor(Constants.Colors.accent)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Constants.Colors.accent.opacity(0.2))
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
+            }
 
             // Tagline
             if let tagline = viewModel.detail?.tagline, !tagline.isEmpty {
@@ -172,6 +193,9 @@ struct DetailView: View {
                     .foregroundColor(Constants.Colors.textSecondary)
             }
 
+            // Where to Watch
+            whereToWatchSection
+
             // Overview
             if let overview = viewModel.detail?.overview, !overview.isEmpty {
                 ScrollView {
@@ -185,17 +209,11 @@ struct DetailView: View {
                 .accessibilityLabel(Constants.Accessibility.overviewScrollable)
             }
 
-            Spacer()
-
-            // Trailer info
-            if let trailerInfo = viewModel.detail?.trailerDisplayInfo {
-                Text(trailerInfo)
-                    .font(.caption)
-                    .foregroundColor(Constants.Colors.textSecondary)
-            }
-
             // Action buttons
             actionButtons
+
+            // Inline trailer list (if multiple trailers)
+            trailersSection
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -254,7 +272,7 @@ struct DetailView: View {
 
     // MARK: - Action Buttons
 
-    /// Play and trailer selector buttons.
+    /// Play trailer and watchlist buttons.
     private var actionButtons: some View {
         HStack(spacing: 16) {
             // Play in-app button (primary)
@@ -270,83 +288,147 @@ struct DetailView: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(!viewModel.hasTrailer)
+            .focused($isPlayButtonFocused)
             .accessibilityLabel(Constants.Accessibility.playButton)
 
-            // Open in YouTube app button (secondary)
-            if viewModel.hasTrailer {
-                Button {
-                    Task {
-                        await viewModel.playSelectedTrailer()
-                    }
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "arrow.up.forward.app")
-                        Text(Constants.UIStrings.openInYouTube)
-                    }
-                    .font(.callout)
+            // Watchlist button
+            Button {
+                Task {
+                    await viewModel.toggleWatchlist()
                 }
-                .buttonStyle(.bordered)
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: viewModel.isOnWatchlist ? "bookmark.fill" : "bookmark")
+                    Text(viewModel.isOnWatchlist ? "On Watchlist" : "Add to Watchlist")
+                }
+                .font(.callout)
+                .fontWeight(.semibold)
             }
+            .buttonStyle(.bordered)
+            .disabled(viewModel.isUpdatingWatchlist)
+            .accessibilityLabel(viewModel.isOnWatchlist ? "Remove from watchlist" : "Add to watchlist")
+        }
+    }
 
-            // Trailer selector (if multiple)
-            if viewModel.hasMultipleTrailers {
-                NavigationLink(destination: TrailerSelectorView(viewModel: viewModel)) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "list.bullet")
-                        Text(Constants.UIStrings.selectTrailer)
+    // MARK: - Trailers Section
+
+    /// Inline trailer list showing all available trailers.
+    @ViewBuilder
+    private var trailersSection: some View {
+        if viewModel.trailers.count > 1 {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("All Trailers (\(viewModel.trailers.count))")
+                    .font(.subheadline)
+                    .foregroundColor(Constants.Colors.textSecondary)
+                    .padding(.leading, 4)
+
+                ScrollView {
+                    VStack(spacing: 4) {
+                        ForEach(viewModel.trailers, id: \.id) { trailer in
+                            InlineTrailerRow(
+                                trailer: trailer,
+                                onPlay: {
+                                    viewModel.selectTrailer(trailer)
+                                    showingTrailerPlayer = true
+                                }
+                            )
+                        }
                     }
-                    .font(.callout)
                 }
-                .buttonStyle(.bordered)
-                .accessibilityLabel(String(format: Constants.Accessibility.trailerSelector, viewModel.trailerCount))
+                .frame(maxHeight: 180)
+            }
+            .padding(.top, 8)
+        }
+    }
+
+    // MARK: - Where to Watch
+
+    /// Streaming service icons showing where the content is available.
+    @ViewBuilder
+    private var whereToWatchSection: some View {
+        if viewModel.watchProviders.hasStreaming {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Where to Watch")
+                    .font(.subheadline)
+                    .foregroundColor(Constants.Colors.textSecondary)
+
+                // Provider icons
+                HStack(spacing: 12) {
+                    ForEach(viewModel.watchProviders.streaming.prefix(6)) { provider in
+                        WatchProviderButton(
+                            provider: provider,
+                            title: viewModel.title
+                        )
+                    }
+                }
             }
         }
     }
 
-    // MARK: - Close Button
+}
 
-    /// Close button in corner.
-    private var closeButton: some View {
-        VStack {
-            HStack {
-                Spacer()
-                Button(action: { dismiss() }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title)
-                        .foregroundColor(Constants.Colors.textSecondary)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(Constants.Accessibility.closeDetailButton)
+// MARK: - Watch Provider Button
+
+/// Tappable streaming service icon.
+struct WatchProviderButton: View {
+
+    /// The provider to display.
+    let provider: WatchProvider
+
+    /// The media title for search.
+    let title: String
+
+    /// Focus state for tvOS.
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        Button {
+            Task {
+                await StreamingLauncher.open(provider: provider, title: title)
             }
-            Spacer()
-        }
-        .padding(40)
-    }
-
-    // MARK: - TMDB Attribution
-
-    /// TMDB logo and attribution.
-    private var tmdbAttribution: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                Button {
-                    // Open TMDB would go here
-                } label: {
-                    Text(Constants.TMDB.attribution)
-                        .font(.caption2)
-                        .foregroundColor(Constants.Colors.textSecondary.opacity(0.5))
-                }
-                .buttonStyle(.plain)
-                .contextMenu {
-                    Button(Constants.UIStrings.openTMDB) {
-                        // Open TMDB website
+        } label: {
+            if let logoURL = provider.logoURL {
+                AsyncImage(url: logoURL) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    case .failure:
+                        providerPlaceholder
+                    case .empty:
+                        ProgressView()
+                    @unknown default:
+                        providerPlaceholder
                     }
                 }
+            } else {
+                providerPlaceholder
             }
         }
-        .padding(30)
+        .buttonStyle(.plain)
+        .frame(width: 60, height: 60)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isFocused ? Constants.Colors.accent : Color.clear, lineWidth: 3)
+        )
+        .scaleEffect(isFocused ? 1.1 : 1.0)
+        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .focused($isFocused)
+        .accessibilityLabel("Watch on \(provider.name)")
+    }
+
+    /// Placeholder when logo fails to load.
+    private var providerPlaceholder: some View {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Constants.Colors.textSecondary.opacity(0.3))
+            .overlay(
+                Text(String(provider.name.prefix(2)))
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundColor(Constants.Colors.textPrimary)
+            )
     }
 }
 
@@ -363,6 +445,73 @@ struct LoadingOverlay: View {
                 .scaleEffect(1.5)
         }
         .ignoresSafeArea()
+    }
+}
+
+// MARK: - Inline Trailer Row
+
+/// A compact trailer row for the inline trailer list on the detail page.
+struct InlineTrailerRow: View {
+
+    /// The trailer to display.
+    let trailer: Video
+
+    /// Action when the row is tapped to play.
+    var onPlay: () -> Void
+
+    /// Focus state for tvOS.
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        Button(action: onPlay) {
+            HStack(spacing: 10) {
+                // Focus indicator - small accent bar on left when focused
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(isFocused ? Constants.Colors.accent : Color.clear)
+                    .frame(width: 3, height: 30)
+
+                // Play icon
+                Image(systemName: "play.circle.fill")
+                    .font(.title3)
+                    .foregroundColor(isFocused ? Constants.Colors.accent : Constants.Colors.textSecondary)
+
+                // Trailer info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(trailer.name)
+                        .font(.callout)
+                        .fontWeight(isFocused ? .semibold : .medium)
+                        .foregroundColor(isFocused ? Constants.Colors.textPrimary : Constants.Colors.textSecondary)
+                        .lineLimit(1)
+
+                    HStack(spacing: 6) {
+                        Text(trailer.type)
+                            .font(.caption)
+                            .foregroundColor(Constants.Colors.textSecondary)
+
+                        if trailer.official {
+                            HStack(spacing: 2) {
+                                Image(systemName: "checkmark.seal.fill")
+                                Text("Official")
+                            }
+                            .font(.caption2)
+                            .foregroundColor(Constants.Colors.accent)
+                        }
+
+                        if let size = trailer.size {
+                            Text("\(size)p")
+                                .font(.caption)
+                                .foregroundColor(Constants.Colors.textSecondary)
+                        }
+                    }
+                }
+
+                Spacer()
+            }
+            .padding(.vertical, 6)
+        }
+        .buttonStyle(.plain)
+        .focused($isFocused)
+        .accessibilityLabel("\(trailer.name), \(trailer.type)\(trailer.official ? ", Official" : "")\(trailer.size != nil ? ", \(trailer.size!)p" : "")")
     }
 }
 
