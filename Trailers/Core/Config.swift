@@ -176,6 +176,33 @@ enum Config {
     /// Available US movie certifications.
     static let movieCertifications = ["G", "PG", "PG-13", "R", "NC-17"]
 
+    // MARK: - YouTube Server Configuration
+
+    /// Base URL for the local YouTube extraction server.
+    /// This server runs on your Mac and extracts direct video URLs using yt-dlp.
+    ///
+    /// To set up:
+    /// 1. Run `python3 Server/yt_server.py` on your Mac
+    /// 2. Update this URL with your Mac's IP address
+    ///
+    /// Example: "http://192.168.1.100:5000"
+    static var youtubeServerURL: String {
+        // Try to read from Info.plist first (for easy configuration)
+        if let serverURL = Bundle.main.infoDictionary?["YOUTUBE_SERVER_URL"] as? String,
+           !serverURL.isEmpty,
+           !serverURL.hasPrefix("$(") {
+            return serverURL
+        }
+
+        // Default fallback - update this with your Mac's IP
+        // Find your Mac's IP: System Settings > Network, or run `ifconfig | grep inet`
+        return "http://192.168.50.149:8080"
+    }
+
+    /// Preferred video quality for in-app playback.
+    /// Options: "best", "1080", "720", "480", "worst"
+    static let youtubePreferredQuality = "best"
+
     // MARK: - Helper Methods
 
     /// Constructs a full URL for a poster image.

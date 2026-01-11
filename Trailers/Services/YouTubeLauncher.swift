@@ -39,23 +39,40 @@ enum YouTubeLauncher {
     @MainActor
     @discardableResult
     static func open(video: Video) async -> Bool {
-        guard video.isYouTube, let url = video.youtubeURL else {
+        guard video.isYouTube else {
             Log.app.warning("Cannot open non-YouTube video: \(video.site)")
             return false
         }
 
-        return await open(url: url)
+        return await open(videoKey: video.key)
     }
 
     /// Opens a video by YouTube video key.
+    ///
+    /// On tvOS, this tries the YouTube app URL scheme first (`youtube://watch/{key}`),
+    /// then falls back to the web URL if the app isn't installed.
     ///
     /// - Parameter videoKey: The YouTube video ID
     /// - Returns: True if the URL was opened successfully
     @MainActor
     @discardableResult
     static func open(videoKey: String) async -> Bool {
-        let url = Constants.YouTube.watchURL(videoKey: videoKey)
-        return await open(url: url)
+        // Try YouTube app URL scheme first (tvOS requires this)
+        if let youtubeAppURL = URL(string: "youtube://watch/\(videoKey)") {
+            Log.app.info("Trying YouTube app URL: \(youtubeAppURL.absoluteString)")
+
+            if UIApplication.shared.canOpenURL(youtubeAppURL) {
+                let success = await UIApplication.shared.open(youtubeAppURL, options: [:])
+                if success {
+                    Log.app.info("YouTube app URL opened successfully")
+                    return true
+                }
+            }
+        }
+
+        // Fall back to web URL (opens in limited web view if YouTube app not installed)
+        let webURL = Constants.YouTube.watchURL(videoKey: videoKey)
+        return await open(url: webURL)
     }
 
     /// Opens a YouTube URL.
@@ -80,6 +97,48 @@ enum YouTubeLauncher {
             Log.app.info("YouTube URL opened successfully")
         } else {
             Log.app.error("Failed to open YouTube URL")
+        }
+
+        return success
+    }
+
+    // MARK: - TMDB Playback
+
+    /// Opens a video on TMDB's embedded player.
+    ///
+    /// - Parameter video: The video to play
+    /// - Returns: True if the URL was opened successfully
+    @MainActor
+    @discardableResult
+    static func openOnTMDB(video: Video) async -> Bool {
+        guard video.isYouTube, let url = video.tmdbVideoURL else {
+            Log.app.warning("Cannot open non-YouTube video on TMDB: \(video.site)")
+            return false
+        }
+
+        return await openOnTMDB(url: url)
+    }
+
+    /// Opens a TMDB video player URL.
+    ///
+    /// - Parameter url: The TMDB player URL
+    /// - Returns: True if the URL was opened successfully
+    @MainActor
+    @discardableResult
+    static func openOnTMDB(url: URL) async -> Bool {
+        Log.app.info("Opening TMDB video URL: \(url.absoluteString)")
+
+        guard UIApplication.shared.canOpenURL(url) else {
+            Log.app.error("Cannot open TMDB URL: \(url.absoluteString)")
+            return false
+        }
+
+        let success = await UIApplication.shared.open(url, options: [:])
+
+        if success {
+            Log.app.info("TMDB video URL opened successfully")
+        } else {
+            Log.app.error("Failed to open TMDB video URL")
         }
 
         return success
@@ -139,6 +198,14 @@ extension Video {
     @MainActor
     func openInYouTube() async -> Bool {
         await YouTubeLauncher.open(video: self)
+    }
+
+    /// Opens this video on TMDB's embedded player.
+    ///
+    /// - Returns: True if opened successfully
+    @MainActor
+    func openOnTMDB() async -> Bool {
+        await YouTubeLauncher.openOnTMDB(video: self)
     }
 
     /// Gets a thumbnail URL for this video.

@@ -71,6 +71,14 @@ struct Video: Identifiable, Hashable, Sendable {
         return Constants.YouTube.watchURL(videoKey: key)
     }
 
+    /// The TMDB embedded video player URL for this video.
+    ///
+    /// - Returns: TMDB player URL, or nil if not a YouTube video
+    var tmdbVideoURL: URL? {
+        guard isYouTube else { return nil }
+        return Constants.TMDB.videoPlayerURL(videoKey: key)
+    }
+
     /// Display string showing video details.
     ///
     /// Format: "YouTube • Official Trailer • 1080p"

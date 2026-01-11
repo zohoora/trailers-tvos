@@ -40,6 +40,9 @@ struct DetailView: View {
     /// Environment dismiss action.
     @Environment(\.dismiss) private var dismiss
 
+    /// Whether the trailer player is showing.
+    @State private var showingTrailerPlayer = false
+
     // MARK: - Body
 
     var body: some View {
@@ -80,6 +83,13 @@ struct DetailView: View {
         .ignoresSafeArea()
         .task {
             await viewModel.load(id: mediaID, fallback: summary)
+        }
+        .fullScreenCover(isPresented: $showingTrailerPlayer) {
+            if let trailer = viewModel.selectedTrailer {
+                TrailerPlayerView(video: trailer) {
+                    showingTrailerPlayer = false
+                }
+            }
         }
     }
 
@@ -247,15 +257,13 @@ struct DetailView: View {
     /// Play and trailer selector buttons.
     private var actionButtons: some View {
         HStack(spacing: 16) {
-            // Play button
+            // Play in-app button (primary)
             Button {
-                Task {
-                    await viewModel.playSelectedTrailer()
-                }
+                showingTrailerPlayer = true
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
-                    Text(viewModel.hasTrailer ? Constants.UIStrings.playInYouTube : Constants.UIStrings.noTrailerAvailable)
+                    Text(viewModel.hasTrailer ? Constants.UIStrings.playTrailer : Constants.UIStrings.noTrailerAvailable)
                 }
                 .font(.callout)
                 .fontWeight(.semibold)
@@ -263,6 +271,22 @@ struct DetailView: View {
             .buttonStyle(.borderedProminent)
             .disabled(!viewModel.hasTrailer)
             .accessibilityLabel(Constants.Accessibility.playButton)
+
+            // Open in YouTube app button (secondary)
+            if viewModel.hasTrailer {
+                Button {
+                    Task {
+                        await viewModel.playSelectedTrailer()
+                    }
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "arrow.up.forward.app")
+                        Text(Constants.UIStrings.openInYouTube)
+                    }
+                    .font(.callout)
+                }
+                .buttonStyle(.bordered)
+            }
 
             // Trailer selector (if multiple)
             if viewModel.hasMultipleTrailers {

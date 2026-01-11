@@ -198,6 +198,19 @@ final class DetailViewModel: ObservableObject {
         return await YouTubeLauncher.open(video: trailer)
     }
 
+    /// Plays the currently selected trailer on TMDB's embedded player.
+    ///
+    /// - Returns: True if playback was initiated
+    @discardableResult
+    func playSelectedTrailerOnTMDB() async -> Bool {
+        guard let trailer = selectedTrailer else {
+            Log.ui.warning("No trailer selected for TMDB playback")
+            return false
+        }
+
+        return await YouTubeLauncher.openOnTMDB(video: trailer)
+    }
+
     /// Plays a specific trailer in YouTube.
     ///
     /// - Parameter video: The trailer to play
