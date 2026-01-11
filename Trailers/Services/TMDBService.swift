@@ -72,7 +72,17 @@ actor TMDBService {
         page: Int,
         bypassCache: Bool = false
     ) async throws -> (items: [MediaSummary], hasMore: Bool) {
-        let filterState = FilterState() // Default state for trending
+        // Create filter state that matches the mediaType for correct cache key
+        let contentType: ContentType
+        switch mediaType {
+        case .movie:
+            contentType = .movies
+        case .tv:
+            contentType = .tvShows
+        case nil:
+            contentType = .all
+        }
+        let filterState = FilterState(contentType: contentType, sort: .trending)
 
         // Check cache first (unless bypassing)
         if !bypassCache {

@@ -199,6 +199,9 @@ final class ContentGridViewModel: ObservableObject {
         resetPagination()
         state = .loadingInitial
 
+        // Capture current filters to detect if they change during load
+        let filtersAtStart = currentFilters
+
         Log.pagination.info("Loading initial content")
         Log.beginSignpost("LoadInitial", id: "initial")
 
@@ -208,6 +211,9 @@ final class ContentGridViewModel: ObservableObject {
                 let result = try await loadPage(1)
 
                 guard !Task.isCancelled else { return }
+
+                // Check if filters changed during load (race condition protection)
+                guard currentFilters == filtersAtStart else { return }
 
                 if result.isEmpty {
                     state = .empty
@@ -327,7 +333,6 @@ final class ContentGridViewModel: ObservableObject {
                 mediaType: currentFilters.contentType.singleType,
                 page: page
             )
-
             result = (trending.items, trending.hasMore, trending.hasMore, trending.hasMore)
         } else {
             // Use discover endpoint
@@ -346,6 +351,9 @@ final class ContentGridViewModel: ObservableObject {
             tvPage = page
             tvExhausted = !result.tvHasMore
         }
+
+        // Check for cancellation before deduplication to avoid race conditions
+        guard !Task.isCancelled else { return [] }
 
         // Deduplicate
         let newItems = result.items.filter { item in
