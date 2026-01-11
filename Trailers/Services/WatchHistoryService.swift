@@ -44,7 +44,14 @@ final class WatchHistoryService: ObservableObject {
 
     // MARK: - Initialization
 
+    /// Set to true to clear history on next launch, then set back to false.
+    private let shouldClearOnLaunch = false
+
     private init() {
+        if shouldClearOnLaunch {
+            defaults.removeObject(forKey: storageKey)
+            Log.app.info("Watch history cleared on launch")
+        }
         loadWatchedIDs()
     }
 
