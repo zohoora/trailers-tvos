@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		0DCA6439F15FD8730E480F0F /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 312C29DF4075A7B685379A62 /* Nuke */; };
 		11DA34ECF7C1A74F2B6202F4 /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645C8078D527C6D591BB7B66 /* Genre.swift */; };
 		136939ED0EBA36147A88B3F3 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E7521E7C1CD2C008236CBD /* NetworkClient.swift */; };
+		1B70D27BE29CE285C15446FB /* TrailerPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77BC684D8E0AC4C7356D45F /* TrailerPlayerView.swift */; };
 		1DA08DD1BD2E2CAACE6F8CEE /* FilterStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390F3F9A65F61B8AE8C16A90 /* FilterStateTests.swift */; };
 		23D27098E530FD2A4123DAF1 /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0B05BEF7E850882290DC8 /* MediaSummary.swift */; };
 		3C551477351EA3F381DE951E /* TMDBTVDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AABCE4A505A3742018A01F7 /* TMDBTVDetailDTO.swift */; };
@@ -72,7 +73,7 @@
 
 /* Begin PBXFileReference section */
 		03869622C7829BE82A60538F /* ImagePipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePipeline.swift; sourceTree = "<group>"; };
-		0D9D96BF070662EDE8A1339A /* TrailersTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TrailersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D9D96BF070662EDE8A1339A /* TrailersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrailersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1736AD81CBF20D6ECD78E81A /* TMDBMovieDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBMovieDetailDTO.swift; sourceTree = "<group>"; };
 		20FD14776EA583DFEC18DF66 /* FilterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBarView.swift; sourceTree = "<group>"; };
 		21A2777B7CA0FC3454F8121E /* ContentGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentGridViewModel.swift; sourceTree = "<group>"; };
@@ -88,10 +89,11 @@
 		4AB0B05BEF7E850882290DC8 /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
 		4D9819A663D53D54E4036C7C /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		52FFE6A32B572727446EAC83 /* BrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseView.swift; sourceTree = "<group>"; };
-		57182C0B5E6E0C58C57263F5 /* TrailersUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TrailersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		57182C0B5E6E0C58C57263F5 /* TrailersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrailersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C59A911E81517CF1A9B07D2 /* MediaDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetail.swift; sourceTree = "<group>"; };
 		645C8078D527C6D591BB7B66 /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		65E7521E7C1CD2C008236CBD /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		6B890316681F8B8DB78F9637 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		6CF6DE080C9D5D568CA9B9CE /* DTODecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTODecodingTests.swift; sourceTree = "<group>"; };
 		7AABCE4A505A3742018A01F7 /* TMDBTVDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTVDetailDTO.swift; sourceTree = "<group>"; };
 		7C46E58D8C97A5904B777084 /* TrailerSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerSelectorView.swift; sourceTree = "<group>"; };
@@ -102,10 +104,9 @@
 		A33B1ACE91BF318A135E967E /* TrailersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailersApp.swift; sourceTree = "<group>"; };
 		A69105E2C18C0191CBB118DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A7A09F88C3EEDF62230D1BB1 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
-		A85DF1B57DE28C83B7B66AF7 /* Trailers.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Trailers.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A85DF1B57DE28C83B7B66AF7 /* Trailers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trailers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE77F733B67DA943730CCABE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BB31DFA654DF36F317CC4ED6 /* PosterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCardView.swift; sourceTree = "<group>"; };
-		BF47744B721D4F5E26E3E5AF /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		BFC827E8361E5AD362E675E3 /* YouTubeLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeLauncher.swift; sourceTree = "<group>"; };
 		C01DBFB9B2E077557E26A6F2 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
 		C78CD47B2DF970BB451AF3CC /* ResponseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCache.swift; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 		D8B5D1EABF7355700B7A7592 /* TMDBVideoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBVideoDTO.swift; sourceTree = "<group>"; };
 		E0BC1674B42F9A090169D0C9 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		E19DB8BBD256D8B0793BC416 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		E77BC684D8E0AC4C7356D45F /* TrailerPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerPlayerView.swift; sourceTree = "<group>"; };
 		F54F66B90B90B084E1ECB50C /* VideoRankingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRankingTests.swift; sourceTree = "<group>"; };
 		FCA1187D438FA55C26F05AD5 /* ErrorOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorOverlayView.swift; sourceTree = "<group>"; };
 		FFD4AC5624AB8F4EEE332438 /* TMDBTVListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBTVListDTO.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			children = (
 				4D9819A663D53D54E4036C7C /* DetailView.swift */,
 				FCA1187D438FA55C26F05AD5 /* ErrorOverlayView.swift */,
+				E77BC684D8E0AC4C7356D45F /* TrailerPlayerView.swift */,
 				7C46E58D8C97A5904B777084 /* TrailerSelectorView.swift */,
 			);
 			path = Screens;
@@ -174,6 +177,15 @@
 				C01DBFB9B2E077557E26A6F2 /* FilterViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		57CD07412337CEF538845C39 /* trailers-tvos */ = {
+			isa = PBXGroup;
+			children = (
+				6B890316681F8B8DB78F9637 /* Config.xcconfig */,
+			);
+			name = "trailers-tvos";
+			path = .;
 			sourceTree = "<group>";
 		};
 		5E6031ADBD7690AB7D6CB40C /* Resources */ = {
@@ -214,15 +226,6 @@
 				BB31DFA654DF36F317CC4ED6 /* PosterCardView.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		98F3DD60865AEBF513B1E85B /* TrailerApp */ = {
-			isa = PBXGroup;
-			children = (
-				BF47744B721D4F5E26E3E5AF /* Config.xcconfig */,
-			);
-			name = TrailerApp;
-			path = .;
 			sourceTree = "<group>";
 		};
 		9A87CCC9D0D63D6185EA8E86 /* Core */ = {
@@ -278,8 +281,8 @@
 		BE7198DA052B0A9841400DED = {
 			isa = PBXGroup;
 			children = (
-				98F3DD60865AEBF513B1E85B /* TrailerApp */,
 				2B99B024D9E6D48DC12F29D5 /* Trailers */,
+				57CD07412337CEF538845C39 /* trailers-tvos */,
 				EB2F694452A5059412D04ABE /* UI */,
 				D1DBC4B1B3AEA9C8B30DC499 /* Unit */,
 				A05EB97282EACD27DB476633 /* Products */,
@@ -392,7 +395,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					C12F7DBE955B564C4D813354 = {
 						TestTargetID = 17D9E0881504AC4C409CABFE;
@@ -412,7 +415,6 @@
 			packageReferences = (
 				CC5839703B42A5AD7C2BBB10 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -471,6 +473,7 @@
 				68B80B9A79407998ACD19E6F /* TMDBTVListDTO.swift in Sources */,
 				60EC7215AE2D0EC9BAE9016D /* TMDBTrendingAllDTO.swift in Sources */,
 				E6749B31B19E7770D4A938DA /* TMDBVideoDTO.swift in Sources */,
+				1B70D27BE29CE285C15446FB /* TrailerPlayerView.swift in Sources */,
 				542B2551D83AD4A1F4BA2670 /* TrailerSelectorView.swift in Sources */,
 				AA0135ED8749E1CE15B4629A /* TrailersApp.swift in Sources */,
 				CA0801437649D6C1A4F7EAAC /* Video.swift in Sources */,
@@ -515,12 +518,13 @@
 /* Begin XCBuildConfiguration section */
 		0330FD02EF311B4075869DA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			baseConfigurationReference = 6B890316681F8B8DB78F9637 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F982984LCX;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = Trailers/Info.plist;
@@ -574,7 +578,7 @@
 		};
 		687619815D9EFA98BD86F0CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			baseConfigurationReference = 6B890316681F8B8DB78F9637 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -610,6 +614,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -622,6 +627,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -668,12 +674,13 @@
 		};
 		C2AB11BE2D383529DE557C63 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			baseConfigurationReference = 6B890316681F8B8DB78F9637 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F982984LCX;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
 				INFOPLIST_FILE = Trailers/Info.plist;
@@ -691,7 +698,7 @@
 		};
 		F9BD02DE6182B02F0D5EE817 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF47744B721D4F5E26E3E5AF /* Config.xcconfig */;
+			baseConfigurationReference = 6B890316681F8B8DB78F9637 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -727,6 +734,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -746,6 +754,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;

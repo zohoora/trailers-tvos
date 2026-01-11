@@ -36,6 +36,14 @@ enum Constants {
 
         /// Logo asset name in the asset catalog.
         static let logoAssetName = "tmdb-logo"
+
+        /// Constructs a TMDB video player URL for a given video key.
+        ///
+        /// - Parameter videoKey: The YouTube video ID
+        /// - Returns: TMDB embedded player URL
+        static func videoPlayerURL(videoKey: String) -> URL {
+            URL(string: "https://www.themoviedb.org/video/play?key=\(videoKey)")!
+        }
     }
 
     // MARK: - YouTube
@@ -104,7 +112,8 @@ enum Constants {
         static let noResultsMessage = "Try adjusting your filters to find more content."
 
         // Detail Screen
-        static let playInYouTube = "Play in YouTube"
+        static let playTrailer = "Play Trailer"
+        static let openInYouTube = "YouTube App"
         static let noTrailerAvailable = "No Trailer Available"
         static let selectTrailer = "Select Trailer"
         static let closeButton = "Close"
@@ -191,20 +200,20 @@ enum Constants {
     /// Layout dimensions and spacing.
     enum Layout {
         // Grid
-        static let gridSpacing: CGFloat = 40
-        static let gridHorizontalPadding: CGFloat = 80
-        static let gridVerticalPadding: CGFloat = 60
+        static let gridSpacing: CGFloat = 35
+        static let gridHorizontalPadding: CGFloat = 40
+        static let gridVerticalPadding: CGFloat = 30
 
         // Poster Card
-        static let posterWidth: CGFloat = 220
-        static let posterHeight: CGFloat = 330
+        static let posterWidth: CGFloat = 300
+        static let posterHeight: CGFloat = 450
         static let posterCornerRadius: CGFloat = 12
         static let posterFocusScale: CGFloat = 1.08
         static let posterShadowRadius: CGFloat = 20
         static let posterShadowOpacity: Float = 0.3
 
         // Filter Bar
-        static let filterBarHeight: CGFloat = 80
+        static let filterBarHeight: CGFloat = 70
         static let filterBarPadding: CGFloat = 40
         static let filterPillSpacing: CGFloat = 20
 

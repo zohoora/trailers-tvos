@@ -166,20 +166,13 @@ struct RateLimitCountdownView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Constants.Colors.background.opacity(0.95))
-        .onAppear {
+        .task {
             timeRemaining = remainingSeconds
-            startCountdown()
-        }
-    }
-
-    private func startCountdown() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            if timeRemaining > 0 {
+            while timeRemaining > 0 {
+                try? await Task.sleep(for: .seconds(1))
                 timeRemaining -= 1
-            } else {
-                timer.invalidate()
-                onComplete()
             }
+            onComplete()
         }
     }
 }

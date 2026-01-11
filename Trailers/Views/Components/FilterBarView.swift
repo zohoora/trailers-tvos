@@ -156,23 +156,17 @@ struct FilterBarView: View {
 
 // MARK: - Filter Picker
 
-/// Generic picker for filter options.
+/// Generic picker for filter options using tvOS-compatible Picker.
 struct FilterPicker<T: Hashable, Label: View>: View {
     let title: String
     @Binding var selection: T
     let options: [T]
     let label: (T) -> Label
 
-    @FocusState private var isFocused: Bool
-
     var body: some View {
-        Menu {
+        Picker(selection: $selection) {
             ForEach(options, id: \.self) { option in
-                Button {
-                    selection = option
-                } label: {
-                    label(option)
-                }
+                label(option).tag(option)
             }
         } label: {
             HStack(spacing: 4) {
@@ -189,22 +183,8 @@ struct FilterPicker<T: Hashable, Label: View>: View {
                     .font(.caption2)
                     .foregroundColor(Constants.Colors.textSecondary)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Constants.Colors.cardBackground)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(
-                                isFocused ? Constants.Colors.accent : Color.clear,
-                                lineWidth: 2
-                            )
-                    )
-            )
         }
-        .focusable()
-        .focused($isFocused)
+        .pickerStyle(.navigationLink)
     }
 }
 

@@ -76,7 +76,7 @@ enum Log {
     private static let signpostLog = OSLog(subsystem: subsystem, category: .pointsOfInterest)
 
     /// Active signpost IDs for tracking paired begin/end events.
-    private static var activeSignposts: [String: OSSignpostID] = [:]
+    nonisolated(unsafe) private static var activeSignposts: [String: OSSignpostID] = [:]
     private static let signpostLock = NSLock()
 
     /// Begins a signpost interval for performance measurement.

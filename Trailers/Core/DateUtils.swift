@@ -56,14 +56,14 @@ enum DateUtils {
     }()
 
     /// ISO 8601 formatter for parsing TMDB timestamps.
-    static let iso8601Formatter: ISO8601DateFormatter = {
+    nonisolated(unsafe) static let iso8601Formatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return formatter
     }()
 
     /// Alternative ISO 8601 formatter without fractional seconds.
-    static let iso8601FormatterNoFractional: ISO8601DateFormatter = {
+    nonisolated(unsafe) static let iso8601FormatterNoFractional: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         return formatter
