@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8UNDCG2G71JQ8Y9QZAI4LKB /* WatchHistoryService.swift */; };
+		TBAP1CNMJMC5ZTN5HODK9PLM /* PrefetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9MNJTR8IWH1WY5HSRE0RU2TH /* PrefetchService.swift */; };
+		VAY5VHKTA3JYWU7BP3LQE56U /* TrailerPrefetchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DOBNHTG040P6SPGV7KEYLH3 /* TrailerPrefetchService.swift */; };
 		M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = LHHSHP0S5KDXEEAEFU7HF91P /* StreamingLauncher.swift */; };
 		RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2UW2LMHBYC27J4GL6R1CNMT /* TMDBWatchProviderDTO.swift */; };
 		H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = W5XKKVSYG0XKCJVHSCKPW7MJ /* WatchProvider.swift */; };
@@ -79,6 +81,8 @@
 
 /* Begin PBXFileReference section */
 		D8UNDCG2G71JQ8Y9QZAI4LKB /* WatchHistoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHistoryService.swift; sourceTree = "<group>"; };
+		9MNJTR8IWH1WY5HSRE0RU2TH /* PrefetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefetchService.swift; sourceTree = "<group>"; };
+		3DOBNHTG040P6SPGV7KEYLH3 /* TrailerPrefetchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerPrefetchService.swift; sourceTree = "<group>"; };
 		LHHSHP0S5KDXEEAEFU7HF91P /* StreamingLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingLauncher.swift; sourceTree = "<group>"; };
 		E2UW2LMHBYC27J4GL6R1CNMT /* TMDBWatchProviderDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBWatchProviderDTO.swift; sourceTree = "<group>"; };
 		W5XKKVSYG0XKCJVHSCKPW7MJ /* WatchProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchProvider.swift; sourceTree = "<group>"; };
@@ -221,6 +225,8 @@
 			isa = PBXGroup;
 			children = (
 				D8UNDCG2G71JQ8Y9QZAI4LKB /* WatchHistoryService.swift */,
+				9MNJTR8IWH1WY5HSRE0RU2TH /* PrefetchService.swift */,
+				3DOBNHTG040P6SPGV7KEYLH3 /* TrailerPrefetchService.swift */,
 				LHHSHP0S5KDXEEAEFU7HF91P /* StreamingLauncher.swift */,
 				03869622C7829BE82A60538F /* ImagePipeline.swift */,
 				65E7521E7C1CD2C008236CBD /* NetworkClient.swift */,
@@ -460,6 +466,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */,
+				TBAP1CNMJMC5ZTN5HODK9PLM /* PrefetchService.swift in Sources */,
+				VAY5VHKTA3JYWU7BP3LQE56U /* TrailerPrefetchService.swift in Sources */,
 				M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */,
 				RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */,
 				H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */,
@@ -510,6 +518,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7LFT2T9R54WITQ69XB7HKI65 /* WatchHistoryService.swift in Sources */,
+				TBAP1CNMJMC5ZTN5HODK9PLM /* PrefetchService.swift in Sources */,
+				VAY5VHKTA3JYWU7BP3LQE56U /* TrailerPrefetchService.swift in Sources */,
 				M34X523HU3YVNLJSDPZ62R3G /* StreamingLauncher.swift in Sources */,
 				RU9SKVAVTFEW9N7TJVP3C5EC /* TMDBWatchProviderDTO.swift in Sources */,
 				H4WL9C8E2TIPTVKAITNOFIIC /* WatchProvider.swift in Sources */,

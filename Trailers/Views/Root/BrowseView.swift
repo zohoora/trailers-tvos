@@ -56,6 +56,9 @@ struct BrowseView: View {
     /// Focus namespace for controlling default focus.
     @Namespace private var gridNamespace
 
+    /// Whether the scroll view is at the top (shows filter bar).
+    @State private var isAtTop = true
+
     // MARK: - Initialization
 
     init() {
@@ -74,14 +77,17 @@ struct BrowseView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    // Filter bar
-                    FilterBarView(
-                        viewModel: filterViewModel,
-                        gridViewModel: gridViewModel
-                    ) {
-                        Task {
-                            await gridViewModel.refresh()
+                    // Filter bar (hidden when scrolled down)
+                    if isAtTop {
+                        FilterBarView(
+                            viewModel: filterViewModel,
+                            gridViewModel: gridViewModel
+                        ) {
+                            Task {
+                                await gridViewModel.refresh()
+                            }
                         }
+                        .transition(.move(edge: .top).combined(with: .opacity))
                     }
 
                     // Content area
@@ -117,6 +123,14 @@ struct BrowseView: View {
             .onChange(of: focusedItemID) { _, newValue in
                 if let id = newValue, let index = gridViewModel.index(of: id) {
                     gridViewModel.loadNextPageIfNeeded(focusedIndex: index)
+
+                    // Show filter bar only when focused on first row
+                    let isFirstRow = index < Config.gridColumns
+                    if isFirstRow != isAtTop {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isAtTop = isFirstRow
+                        }
+                    }
                 }
             }
             .onChange(of: navigationPath.count) { oldCount, newCount in
@@ -164,10 +178,10 @@ struct BrowseView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVGrid(
-                    columns: gridColumns,
-                    spacing: Constants.Layout.gridSpacing
-                ) {
-                    ForEach(gridViewModel.items) { item in
+                        columns: gridColumns,
+                        spacing: Constants.Layout.gridSpacing
+                    ) {
+                        ForEach(gridViewModel.items) { item in
                         Button {
                             navigationPath.append(item.id)
                         } label: {
@@ -182,20 +196,20 @@ struct BrowseView: View {
                             (savedFocusID == nil && item.id == gridViewModel.items.first?.id),
                             in: gridNamespace
                         )
-                    }
+                        }
 
-                    // Loading footer
-                    if gridViewModel.isLoadingMore {
-                        LoadingFooterView()
-                            .gridCellColumns(Config.gridColumns)
-                    }
+                        // Loading footer
+                        if gridViewModel.isLoadingMore {
+                            LoadingFooterView()
+                                .gridCellColumns(Config.gridColumns)
+                        }
 
-                    // End of content indicator
-                    if gridViewModel.isExhausted && gridViewModel.itemCount > 0 {
-                        endOfContentView
-                            .gridCellColumns(Config.gridColumns)
+                        // End of content indicator
+                        if gridViewModel.isExhausted && gridViewModel.itemCount > 0 {
+                            endOfContentView
+                                .gridCellColumns(Config.gridColumns)
+                        }
                     }
-                }
                 .padding(.horizontal, Constants.Layout.gridHorizontalPadding)
                 .padding(.vertical, Constants.Layout.gridVerticalPadding)
             }

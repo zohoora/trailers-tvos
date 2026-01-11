@@ -119,13 +119,13 @@ enum MediaType: String, Codable, Hashable, Sendable, CaseIterable {
 
     /// Additional data to request in detail API calls.
     ///
-    /// - Returns: "release_dates,videos" for movies, "content_ratings,videos" for TV
+    /// - Returns: "release_dates,videos,credits" for movies, "content_ratings,videos,credits" for TV
     var appendToResponse: String {
         switch self {
         case .movie:
-            return "release_dates,videos"
+            return "release_dates,videos,credits"
         case .tv:
-            return "content_ratings,videos"
+            return "content_ratings,videos,credits"
         }
     }
 }

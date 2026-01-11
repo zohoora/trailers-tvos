@@ -74,8 +74,8 @@ final class FilterViewModel: ObservableObject {
 
     /// Creates a new FilterViewModel.
     ///
-    /// - Parameter tmdbService: Service for API calls (defaults to new instance)
-    init(tmdbService: TMDBService = TMDBService()) {
+    /// - Parameter tmdbService: Service for API calls (defaults to shared instance)
+    init(tmdbService: TMDBService = .shared) {
         self.tmdbService = tmdbService
     }
 

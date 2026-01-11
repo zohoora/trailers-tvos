@@ -114,7 +114,8 @@ struct TMDBTVListDTO: Decodable, Sendable {
             voteAverage: voteAverage,
             voteCount: voteCount,
             genreIDs: genreIds ?? [],
-            popularity: popularity
+            popularity: popularity,
+            originalLanguage: originalLanguage
         )
     }
 }

@@ -105,6 +105,22 @@ struct TrailerPlayerView: View {
             return
         }
 
+        // Check for prefetched/cached URL first
+        if let cachedURL = await TrailerPrefetchService.shared.getCachedURL(for: video.key) {
+            print("[TrailerPlayer] Using prefetched stream URL")
+            await MainActor.run {
+                self.playbackCoordinator = PlaybackCoordinator(
+                    video: video,
+                    mediaTitle: mediaTitle,
+                    mediaID: mediaID
+                )
+                self.videoURL = cachedURL
+                self.isLoading = false
+            }
+            return
+        }
+
+        // No cache hit - fetch from server
         let serverURL = Config.youtubeServerURL
         let quality = Config.youtubePreferredQuality
 

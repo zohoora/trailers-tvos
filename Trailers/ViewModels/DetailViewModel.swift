@@ -96,6 +96,12 @@ final class DetailViewModel: ObservableObject {
     /// Streaming/rental/purchase providers for this media.
     @Published private(set) var watchProviders: WatchProvidersResult = .empty
 
+    /// Similar titles for the current media.
+    @Published private(set) var similarItems: [MediaSummary] = []
+
+    /// Whether similar titles are loading.
+    @Published private(set) var isLoadingSimilar: Bool = false
+
     // MARK: - Private Properties
 
     /// TMDB service for fetching detail.
@@ -115,7 +121,7 @@ final class DetailViewModel: ObservableObject {
     /// Creates a new DetailViewModel.
     ///
     /// - Parameter tmdbService: Service for API calls
-    init(tmdbService: TMDBService = TMDBService()) {
+    init(tmdbService: TMDBService = .shared) {
         self.tmdbService = tmdbService
     }
 
@@ -295,6 +301,7 @@ extension DetailViewModel {
         fallbackSummary = nil
         isOnWatchlist = false
         watchProviders = .empty
+        similarItems = []
     }
 }
 
@@ -352,5 +359,28 @@ extension DetailViewModel {
             Log.ui.warning("Failed to fetch watch providers: \(error.localizedDescription)")
             self.watchProviders = .empty
         }
+    }
+}
+
+// MARK: - Similar Titles
+
+extension DetailViewModel {
+
+    /// Fetches similar titles for the current media.
+    func fetchSimilarTitles() async {
+        guard let id = mediaID else { return }
+
+        isLoadingSimilar = true
+
+        do {
+            let similar = try await tmdbService.fetchSimilar(for: id)
+            self.similarItems = similar
+        } catch {
+            // Non-fatal: just means we won't show similar titles
+            Log.ui.warning("Failed to fetch similar titles: \(error.localizedDescription)")
+            self.similarItems = []
+        }
+
+        isLoadingSimilar = false
     }
 }

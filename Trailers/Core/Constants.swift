@@ -200,15 +200,15 @@ enum Constants {
     /// Layout dimensions and spacing.
     enum Layout {
         // Grid
-        static let gridSpacing: CGFloat = 35
-        static let gridHorizontalPadding: CGFloat = 40
-        static let gridVerticalPadding: CGFloat = 30
+        static let gridSpacing: CGFloat = 45
+        static let gridHorizontalPadding: CGFloat = 8
+        static let gridVerticalPadding: CGFloat = 50
 
         // Poster Card
-        static let posterWidth: CGFloat = 300
-        static let posterHeight: CGFloat = 450
+        static let posterWidth: CGFloat = 303
+        static let posterHeight: CGFloat = 454
         static let posterCornerRadius: CGFloat = 12
-        static let posterFocusScale: CGFloat = 1.08
+        static let posterFocusScale: CGFloat = 1.12
         static let posterShadowRadius: CGFloat = 20
         static let posterShadowOpacity: Float = 0.3
 
@@ -234,7 +234,7 @@ enum Constants {
     enum Colors {
         static let background = Color(hex: 0x1A1A1A)
         static let cardBackground = Color(hex: 0x2A2A2A)
-        static let accent = Color.blue
+        static let accent = Color(hex: 0xA855F7) // Purple/lilac
         static let focusGlow = Color.white.opacity(0.3)
         static let textPrimary = Color.white
         static let textSecondary = Color.gray

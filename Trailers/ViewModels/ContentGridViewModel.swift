@@ -171,7 +171,7 @@ final class ContentGridViewModel: ObservableObject {
     ///   - tmdbService: Service for API calls
     ///   - filterViewModel: Filter view model to observe
     init(
-        tmdbService: TMDBService = TMDBService(),
+        tmdbService: TMDBService = .shared,
         filterViewModel: FilterViewModel? = nil
     ) {
         self.tmdbService = tmdbService

@@ -75,11 +75,23 @@ struct MediaDetail: Identifiable, Hashable, Sendable {
     /// Popularity score from TMDB.
     let popularity: Double?
 
+    /// Original language code (e.g., "en", "ko", "ja").
+    let originalLanguage: String?
+
+    /// Main cast members.
+    let cast: [CastMember]
+
     // MARK: - Computed Properties
 
     /// The media type (movie or TV).
     var mediaType: MediaType {
         id.type
+    }
+
+    /// Returns true if this is a foreign language (non-English) title.
+    var isForeignLanguage: Bool {
+        guard let lang = originalLanguage else { return false }
+        return lang != "en"
     }
 
     /// Year text for display ("2025" or "TBA").
@@ -200,9 +212,44 @@ struct MediaDetail: Identifiable, Hashable, Sendable {
             genres: [], // Would need genre lookup
             certification: Constants.FilterLabels.certificationNotRated,
             videos: [],
-            popularity: summary.popularity
+            popularity: summary.popularity,
+            originalLanguage: summary.originalLanguage,
+            cast: []
         )
     }
+
+    /// Top cast members formatted for display.
+    ///
+    /// Format: "Actor 1, Actor 2, Actor 3"
+    var castFormatted: String {
+        cast.prefix(5).map(\.name).joined(separator: ", ")
+    }
+
+    /// Whether there are cast members to display.
+    var hasCast: Bool {
+        !cast.isEmpty
+    }
+}
+
+// MARK: - Cast Member
+
+/// A cast member (actor) in a movie or TV show.
+struct CastMember: Identifiable, Hashable, Codable, Sendable {
+
+    /// TMDB person ID.
+    let id: Int
+
+    /// Actor's name.
+    let name: String
+
+    /// Character name played.
+    let character: String?
+
+    /// Path to profile image.
+    let profilePath: String?
+
+    /// Billing order (lower = more prominent).
+    let order: Int
 }
 
 // MARK: - Codable

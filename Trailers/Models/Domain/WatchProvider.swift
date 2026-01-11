@@ -76,12 +76,12 @@ enum StreamingService: String, CaseIterable, Sendable {
     /// Maps TMDB provider ID to streaming service.
     static func from(providerID: Int) -> StreamingService? {
         switch providerID {
-        case 8: return .netflix           // Netflix
-        case 337: return .disneyPlus      // Disney Plus
-        case 9, 10, 119: return .amazonPrime  // Amazon Prime Video variants
+        case 8, 1796: return .netflix     // Netflix, Netflix basic with Ads
+        case 337, 390: return .disneyPlus // Disney Plus, Disney Plus Basic
+        case 9, 10, 119, 1899, 1968, 2100: return .amazonPrime  // Amazon Prime Video variants
         case 2, 350: return .appleTv      // Apple TV, Apple TV Plus
         case 230: return .crave           // Crave
-        case 531: return .paramountPlus   // Paramount Plus
+        case 531, 582, 1770, 1853, 2099, 675: return .paramountPlus   // Paramount+ variants
         case 15: return .hulu             // Hulu
         default: return nil
         }
@@ -134,6 +134,80 @@ struct WatchProvidersResult: Sendable {
     /// Whether any streaming providers are available.
     var hasStreaming: Bool {
         !streaming.isEmpty
+    }
+
+    /// Streaming providers deduplicated by service type or name.
+    ///
+    /// Multiple variants of the same service (e.g., Paramount+, Paramount+ with Showtime)
+    /// are consolidated to a single entry, preferring the one with higher display priority.
+    var deduplicatedStreaming: [WatchProvider] {
+        var seenServices = Set<String>()
+        var result: [WatchProvider] = []
+
+        // Sort by display priority (lower = more prominent)
+        let sorted = streaming.sorted { $0.displayPriority < $1.displayPriority }
+
+        for provider in sorted {
+            // Use streaming service type if known, otherwise normalize the name
+            let key: String
+            if let service = provider.serviceType {
+                key = service.rawValue
+            } else {
+                // Aggressive name normalization to extract base service name
+                key = Self.normalizeProviderName(provider.name)
+            }
+
+            if !seenServices.contains(key) {
+                seenServices.insert(key)
+                result.append(provider)
+            }
+        }
+
+        return result
+    }
+
+    /// Normalizes a provider name to extract the base service name.
+    ///
+    /// Examples:
+    /// - "Netflix basic with Ads" → "netflix"
+    /// - "Amazon Prime Video" → "amazon"
+    /// - "Prime Video" → "amazon" (via alias)
+    /// - "Paramount+ with Showtime" → "paramount"
+    private static func normalizeProviderName(_ name: String) -> String {
+        var normalized = name.lowercased()
+
+        // Remove common suffixes and qualifiers
+        let removals = [
+            " basic with ads", " with ads", " ads",
+            " with showtime", " showtime",
+            " plus", "+",
+            " prime video", " prime", " video",
+            " channel", " tv",
+            " basic", " premium", " standard"
+        ]
+
+        for removal in removals {
+            normalized = normalized.replacingOccurrences(of: removal, with: "")
+        }
+
+        // Take just the first word (base brand name)
+        // e.g., "amazon prime video" → "amazon"
+        var baseName: String
+        if let firstWord = normalized.trimmingCharacters(in: .whitespaces).split(separator: " ").first {
+            baseName = String(firstWord)
+        } else {
+            baseName = normalized.trimmingCharacters(in: .whitespaces)
+        }
+
+        // Map known aliases to canonical names
+        let aliases: [String: String] = [
+            "prime": "amazon",      // "Prime Video" → "amazon"
+            "disney": "disneyplus", // "Disney+" variants
+            "hbo": "max",           // HBO Max rebranded to Max
+            "apple": "appletv"      // Apple TV variants
+        ]
+
+        return aliases[baseName] ?? baseName
     }
 
     /// Whether any providers are available at all.

@@ -27,6 +27,14 @@ import Foundation
 /// ```
 actor TMDBService {
 
+    // MARK: - Shared Instance
+
+    /// Shared instance for app-wide use.
+    ///
+    /// Use this for prefetching and other cross-component access.
+    /// ViewModels can still create their own instances for testing.
+    static let shared = TMDBService()
+
     // MARK: - Properties
 
     /// Network client for API requests.
@@ -358,6 +366,46 @@ actor TMDBService {
         Log.network.info("Found \(result.streaming.count) streaming providers for \(mediaID)")
 
         return result
+    }
+
+    // MARK: - Similar Titles
+
+    /// Fetches similar titles for a given media item.
+    ///
+    /// Uses TMDB's similar endpoint to find related content.
+    /// Returns up to 10 results for display in the detail view.
+    ///
+    /// - Parameter mediaID: The media ID to find similar content for
+    /// - Returns: Array of similar media summaries (up to 10)
+    /// - Throws: NetworkError on failure
+    func fetchSimilar(for mediaID: MediaID) async throws -> [MediaSummary] {
+        let endpoint: String
+        switch mediaID.type {
+        case .movie:
+            endpoint = "/movie/\(mediaID.id)/similar"
+        case .tv:
+            endpoint = "/tv/\(mediaID.id)/similar"
+        }
+
+        switch mediaID.type {
+        case .movie:
+            let response = try await networkClient.fetch(
+                TMDBPaginatedDTO<TMDBMovieListDTO>.self,
+                from: endpoint
+            )
+            let items = response.results.prefix(10).map { $0.toMediaSummary() }
+            Log.network.info("Found \(items.count) similar movies for \(mediaID)")
+            return Array(items)
+
+        case .tv:
+            let response = try await networkClient.fetch(
+                TMDBPaginatedDTO<TMDBTVListDTO>.self,
+                from: endpoint
+            )
+            let items = response.results.prefix(10).map { $0.toMediaSummary() }
+            Log.network.info("Found \(items.count) similar TV shows for \(mediaID)")
+            return Array(items)
+        }
     }
 
     // MARK: - Genres

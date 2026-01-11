@@ -79,11 +79,17 @@ struct TMDBTVDetailDTO: Decodable, Sendable {
     /// Type (Scripted, Documentary, etc.).
     let type: String?
 
+    /// Original language code.
+    let originalLanguage: String?
+
     /// Content ratings container (for certification extraction).
     let contentRatings: TMDBContentRatingsContainer?
 
     /// Videos container.
     let videos: TMDBVideosContainer?
+
+    /// Credits container (cast and crew).
+    let credits: TMDBCreditsContainer?
 
     // MARK: - Coding Keys
 
@@ -106,8 +112,10 @@ struct TMDBTVDetailDTO: Decodable, Sendable {
         case numberOfEpisodes = "number_of_episodes"
         case status
         case type
+        case originalLanguage = "original_language"
         case contentRatings = "content_ratings"
         case videos
+        case credits
     }
 
     // MARK: - Domain Mapping
@@ -127,6 +135,12 @@ struct TMDBTVDetailDTO: Decodable, Sendable {
         // Convert videos
         let domainVideos = (videos?.results ?? []).map { $0.toVideo() }
 
+        // Convert cast (top 10)
+        let domainCast = (credits?.cast ?? [])
+            .sorted { $0.order ?? 999 < $1.order ?? 999 }
+            .prefix(10)
+            .map { $0.toCastMember() }
+
         // Use first episode runtime
         let episodeRuntime = episodeRunTime?.first
 
@@ -145,7 +159,9 @@ struct TMDBTVDetailDTO: Decodable, Sendable {
             genres: domainGenres,
             certification: certification,
             videos: domainVideos,
-            popularity: popularity
+            popularity: popularity,
+            originalLanguage: originalLanguage,
+            cast: Array(domainCast)
         )
     }
 }

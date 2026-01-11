@@ -8,7 +8,8 @@ A native **tvOS 17+** app that displays a poster grid of movies and TV shows fro
 - **Poster Grid**: Browse current movies and TV shows in a visually appealing grid layout
 - **Filtering**: Filter by content type, genre, release date, and certification
 - **Sorting**: Sort by trending, popularity, release date, or rating
-- **Detail View**: View full media information including ratings, runtime, and overview
+- **Detail View**: View full media information including ratings, runtime, cast, and overview
+- **Smart Prefetching**: Detail data prefetches on poster focus; trailer URLs prefetch when viewing details
 - **Offline Support**: Cached content available when offline
 - **Accessibility**: Full VoiceOver support and Reduce Motion compatibility
 
@@ -132,7 +133,8 @@ open Trailers.xcodeproj
 - `MediaType` - Movie/TV enumeration
 - `MediaID` - Unique identifier combining type and ID
 - `MediaSummary` - Grid item model
-- `MediaDetail` - Full detail model
+- `MediaDetail` - Full detail model with cast
+- `CastMember` - Actor/cast member model
 - `Video` - Trailer model with ranking
 - `FilterState` - Immutable filter configuration
 - `Genre` / `GenreDisplay` - Genre models
@@ -140,7 +142,9 @@ open Trailers.xcodeproj
 #### Services
 - `NetworkClient` - Actor-based network client with rate limiting
 - `ResponseCache` - Two-tier caching (memory + disk)
-- `TMDBService` - High-level TMDB API service
+- `TMDBService` - High-level TMDB API service (shared singleton for cache coherence)
+- `PrefetchService` - Debounced detail prefetching on poster focus
+- `TrailerPrefetchService` - Trailer URL prefetch and AVPlayer pre-buffering
 - `NetworkMonitor` - NWPathMonitor wrapper
 - `ImagePipeline` - Image loading configuration
 - `YouTubeLauncher` - YouTube Universal Link handler
@@ -180,6 +184,23 @@ The app enforces these filter invariants automatically:
 | Detail | 30 minutes | Moderate freshness |
 
 Offline mode returns expired cache entries with an "Offline" badge.
+
+## Prefetching Strategy
+
+The app uses intelligent prefetching to minimize perceived loading times:
+
+### Detail Prefetch
+- **Trigger**: When user focuses on a poster in the grid
+- **Debounce**: 350ms (prevents rapid navigation spam)
+- **Action**: Fetches full detail data from TMDB
+- **Result**: Detail view loads instantly when user selects
+
+### Trailer Prefetch
+- **Trigger**: When detail view loads
+- **Action**: Fetches stream URL from yt-dlp server + creates AVPlayer
+- **Pre-buffer**: AVPlayer begins buffering in background
+- **TTL**: 1 hour (YouTube URLs expire after ~4 hours)
+- **Result**: Trailer playback starts nearly instantly
 
 ## API Endpoints Used
 
@@ -287,6 +308,8 @@ Trailers/
 │   ├── NetworkClient.swift
 │   ├── TMDBService.swift
 │   ├── ResponseCache.swift
+│   ├── PrefetchService.swift
+│   ├── TrailerPrefetchService.swift
 │   ├── NetworkMonitor.swift
 │   ├── ImagePipeline.swift
 │   ├── YouTubeLauncher.swift

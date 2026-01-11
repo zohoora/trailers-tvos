@@ -60,16 +60,21 @@ struct PosterCardView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Constants.Layout.posterCornerRadius))
                 .overlay(focusBorder)
                 .overlay(watchedBadge, alignment: .topTrailing)
+                .overlay(subtitleBadge, alignment: .topLeading)
                 .shadow(
-                    color: isFocused ? Constants.Colors.focusGlow : .clear,
-                    radius: isFocused ? Constants.Layout.posterShadowRadius : 0
+                    color: isFocused ? Constants.Colors.accent.opacity(0.6) : .clear,
+                    radius: isFocused ? 30 : 0
+                )
+                .shadow(
+                    color: isFocused ? Constants.Colors.accent.opacity(0.4) : .clear,
+                    radius: isFocused ? 15 : 0
                 )
 
             // Info Overlay
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 // Title
                 Text(item.title)
-                    .font(.caption)
+                    .font(.callout)
                     .fontWeight(.medium)
                     .foregroundColor(Constants.Colors.textPrimary)
                     .lineLimit(1)
@@ -78,26 +83,26 @@ struct PosterCardView: View {
                 HStack(spacing: 8) {
                     // Year
                     Text(item.yearText)
-                        .font(.caption2)
+                        .font(.caption)
                         .foregroundColor(Constants.Colors.textSecondary)
 
                     // Rating
-                    HStack(spacing: 2) {
+                    HStack(spacing: 3) {
                         Text("★")
                             .foregroundColor(Constants.Colors.ratingStarColor)
                         Text(item.ratingDisplay)
                             .foregroundColor(Constants.Colors.textSecondary)
                     }
-                    .font(.caption2)
+                    .font(.caption)
 
                     Spacer()
 
                     // Type badge
                     Text(item.typeBadge)
-                        .font(.system(size: 9, weight: .bold))
+                        .font(.system(size: 11, weight: .bold))
                         .foregroundColor(.white)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
                         .background(badgeColor)
                         .clipShape(Capsule())
                 }
@@ -107,6 +112,19 @@ struct PosterCardView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(item.accessibilityLabel)
         .accessibilityAddTraits(.isButton)
+        .onChange(of: isFocused) { _, focused in
+            if focused {
+                // Schedule prefetch when user focuses on this card
+                Task {
+                    await PrefetchService.shared.schedulePrefetch(for: item.id)
+                }
+            } else {
+                // Cancel prefetch if user moves away quickly
+                Task {
+                    await PrefetchService.shared.cancelPrefetch(for: item.id)
+                }
+            }
+        }
     }
 
     // MARK: - Subviews
@@ -134,12 +152,12 @@ struct PosterCardView: View {
         }
     }
 
-    /// Border overlay for focus state (used with reduce motion).
+    /// Border overlay for focus state.
     @ViewBuilder
     private var focusBorder: some View {
-        if reduceMotion && isFocused {
+        if isFocused {
             RoundedRectangle(cornerRadius: Constants.Layout.posterCornerRadius)
-                .strokeBorder(Constants.Colors.accent, lineWidth: 4)
+                .strokeBorder(Constants.Colors.accent, lineWidth: 5)
         }
     }
 
@@ -154,6 +172,24 @@ struct PosterCardView: View {
                 .background(
                     Circle()
                         .fill(Constants.Colors.accent.opacity(0.9))
+                        .shadow(color: .black.opacity(0.4), radius: 4, x: 0, y: 2)
+                )
+                .padding(10)
+        }
+    }
+
+    /// Subtitle indicator badge for foreign language titles.
+    @ViewBuilder
+    private var subtitleBadge: some View {
+        if item.isForeignLanguage {
+            Text("SUB")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.orange.opacity(0.9))
                         .shadow(color: .black.opacity(0.4), radius: 4, x: 0, y: 2)
                 )
                 .padding(10)
@@ -195,7 +231,7 @@ struct PosterButtonStyle: ButtonStyle {
             return 1.0
         }
         if configuration.isPressed {
-            return 0.95
+            return 0.98
         }
         return isFocused ? Constants.Layout.posterFocusScale : 1.0
     }
@@ -228,7 +264,8 @@ extension MediaSummary {
             voteAverage: 8.8,
             voteCount: 30000,
             genreIDs: [28, 878],
-            popularity: 100.0
+            popularity: 100.0,
+            originalLanguage: "en"
         )
     }
 
@@ -243,7 +280,8 @@ extension MediaSummary {
             voteAverage: 9.5,
             voteCount: 10000,
             genreIDs: [18, 80],
-            popularity: 200.0
+            popularity: 200.0,
+            originalLanguage: "en"
         )
     }
 }

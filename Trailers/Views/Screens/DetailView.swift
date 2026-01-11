@@ -86,7 +86,13 @@ struct DetailView: View {
             await viewModel.load(id: mediaID, fallback: summary)
             await viewModel.checkWatchlistStatus()
             await viewModel.fetchWatchProviders()
+            await viewModel.fetchSimilarTitles()
             isPlayButtonFocused = true
+
+            // Prefetch the best trailer for instant playback
+            if let trailer = viewModel.detail?.bestTrailer {
+                await TrailerPrefetchService.shared.prefetch(videoKey: trailer.key)
+            }
         }
         .fullScreenCover(isPresented: $showingTrailerPlayer) {
             if let trailer = viewModel.selectedTrailer {
@@ -153,12 +159,50 @@ struct DetailView: View {
     /// Right-side info view.
     private var infoView: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Title with watchlist badge
+            // Title with rating and certification
             HStack(alignment: .firstTextBaseline, spacing: 12) {
                 Text(viewModel.detail?.title ?? summary?.title ?? "")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Constants.Colors.textPrimary)
+
+                // Rating (e.g., "8.7/10")
+                if let avg = viewModel.detail?.voteAverage, avg > 0 {
+                    HStack(spacing: 4) {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(Constants.Colors.ratingStarColor)
+                        Text(String(format: "%.1f/10", avg))
+                    }
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Constants.Colors.textPrimary)
+                }
+
+                // Certification badge (e.g., "TV-MA")
+                if let cert = viewModel.detail?.certification, cert != Constants.FilterLabels.certificationNotRated {
+                    Text(cert)
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .foregroundColor(Constants.Colors.textPrimary)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Constants.Colors.textSecondary, lineWidth: 1)
+                        )
+                }
+
+                // Foreign language badge
+                if viewModel.detail?.isForeignLanguage ?? summary?.isForeignLanguage ?? false {
+                    Text("SUB")
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.orange.opacity(0.9))
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
 
                 // Watchlist badge
                 if viewModel.isOnWatchlist {
@@ -183,8 +227,8 @@ struct DetailView: View {
             // Metadata row
             metadataRow
 
-            // Score and certification
-            scoreRow
+            // Cast
+            castRow
 
             // Genres
             if let genres = viewModel.detail?.genresFormatted, !genres.isEmpty {
@@ -212,8 +256,8 @@ struct DetailView: View {
             // Action buttons
             actionButtons
 
-            // Inline trailer list (if multiple trailers)
-            trailersSection
+            // Similar titles
+            similarTitlesSection
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -237,37 +281,19 @@ struct DetailView: View {
         .foregroundColor(Constants.Colors.textSecondary)
     }
 
-    // MARK: - Score Row
+    // MARK: - Cast Row
 
-    /// Rating and certification.
-    private var scoreRow: some View {
-        HStack(spacing: 20) {
-            // Rating
-            if let rating = viewModel.detail?.ratingFormatted {
-                HStack(spacing: 4) {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Constants.Colors.ratingStarColor)
-                    Text(rating)
-                        .fontWeight(.semibold)
-                }
+    /// Main cast members.
+    @ViewBuilder
+    private var castRow: some View {
+        if let detail = viewModel.detail, detail.hasCast {
+            HStack(spacing: 4) {
+                Image(systemName: "person.2.fill")
+                Text(detail.castFormatted)
             }
-
-            // Certification
-            if let cert = viewModel.detail?.certification {
-                Text(cert)
-                    .font(.callout)
-                    .fontWeight(.medium)
-                    .foregroundColor(Constants.Colors.textPrimary)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(Constants.Colors.textSecondary, lineWidth: 1)
-                    )
-            }
+            .font(.callout)
+            .foregroundColor(Constants.Colors.textPrimary)
         }
-        .font(.title3)
-        .foregroundColor(Constants.Colors.textPrimary)
     }
 
     // MARK: - Action Buttons
@@ -341,6 +367,43 @@ struct DetailView: View {
         }
     }
 
+    // MARK: - Similar Titles
+
+    /// Horizontal scrolling section of similar titles.
+    @ViewBuilder
+    private var similarTitlesSection: some View {
+        if !viewModel.similarItems.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Similar Titles")
+                    .font(.subheadline)
+                    .foregroundColor(Constants.Colors.textSecondary)
+                    .padding(.leading, 4)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 24) {
+                        ForEach(viewModel.similarItems) { item in
+                            NavigationLink(value: item.id) {
+                                SimilarTitleCard(item: item)
+                            }
+                            .buttonStyle(SimilarCardButtonStyle())
+                        }
+                    }
+                    .padding(.vertical, 20)
+                }
+            }
+            .padding(.top, 16)
+        } else if viewModel.isLoadingSimilar {
+            HStack(spacing: 8) {
+                ProgressView()
+                    .scaleEffect(0.8)
+                Text("Loading similar titles...")
+                    .font(.caption)
+                    .foregroundColor(Constants.Colors.textSecondary)
+            }
+            .padding(.top, 8)
+        }
+    }
+
     // MARK: - Where to Watch
 
     /// Streaming service icons showing where the content is available.
@@ -352,9 +415,9 @@ struct DetailView: View {
                     .font(.subheadline)
                     .foregroundColor(Constants.Colors.textSecondary)
 
-                // Provider icons
+                // Provider icons (deduplicated)
                 HStack(spacing: 12) {
-                    ForEach(viewModel.watchProviders.streaming.prefix(6)) { provider in
+                    ForEach(viewModel.watchProviders.deduplicatedStreaming.prefix(6)) { provider in
                         WatchProviderButton(
                             provider: provider,
                             title: viewModel.title
@@ -407,11 +470,11 @@ struct WatchProviderButton: View {
             }
         }
         .buttonStyle(.plain)
-        .frame(width: 60, height: 60)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .frame(width: 100, height: 100)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(isFocused ? Constants.Colors.accent : Color.clear, lineWidth: 3)
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(isFocused ? Constants.Colors.accent : Color.clear, lineWidth: 4)
         )
         .scaleEffect(isFocused ? 1.1 : 1.0)
         .animation(.easeInOut(duration: 0.15), value: isFocused)
@@ -421,11 +484,11 @@ struct WatchProviderButton: View {
 
     /// Placeholder when logo fails to load.
     private var providerPlaceholder: some View {
-        RoundedRectangle(cornerRadius: 12)
+        RoundedRectangle(cornerRadius: 16)
             .fill(Constants.Colors.textSecondary.opacity(0.3))
             .overlay(
                 Text(String(provider.name.prefix(2)))
-                    .font(.caption)
+                    .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(Constants.Colors.textPrimary)
             )
@@ -512,6 +575,65 @@ struct InlineTrailerRow: View {
         .buttonStyle(.plain)
         .focused($isFocused)
         .accessibilityLabel("\(trailer.name), \(trailer.type)\(trailer.official ? ", Official" : "")\(trailer.size != nil ? ", \(trailer.size!)p" : "")")
+    }
+}
+
+// MARK: - Similar Title Card
+
+/// A compact card for displaying similar titles in horizontal scroll.
+struct SimilarTitleCard: View {
+
+    /// The media item to display.
+    let item: MediaSummary
+
+    /// Focus state for tvOS.
+    @Environment(\.isFocused) private var isFocused
+
+    var body: some View {
+        Group {
+            if let url = item.posterURL {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    case .failure:
+                        ImagePlaceholder.poster(title: item.title)
+                    case .empty:
+                        ProgressView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Constants.Colors.cardBackground)
+                    @unknown default:
+                        ImagePlaceholder.poster(title: item.title)
+                    }
+                }
+            } else {
+                ImagePlaceholder.poster(title: item.title)
+            }
+        }
+        .frame(width: 180, height: 270)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(isFocused ? Constants.Colors.accent : .clear, lineWidth: 4)
+        )
+        .scaleEffect(isFocused ? 1.08 : 1.0)
+        .shadow(
+            color: isFocused ? Constants.Colors.accent.opacity(0.5) : .clear,
+            radius: isFocused ? 20 : 0
+        )
+        .animation(.easeInOut(duration: 0.15), value: isFocused)
+        .accessibilityLabel("\(item.title), \(item.yearText)")
+    }
+}
+
+/// Button style for similar title cards.
+struct SimilarCardButtonStyle: ButtonStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }
 }
 

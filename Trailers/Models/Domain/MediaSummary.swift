@@ -56,6 +56,9 @@ struct MediaSummary: Identifiable, Hashable, Sendable {
     /// Popularity score from TMDB (used for sorting).
     let popularity: Double?
 
+    /// Original language code (e.g., "en", "ko", "ja").
+    let originalLanguage: String?
+
     // MARK: - Computed Properties
 
     /// The media type (movie or TV).
@@ -123,6 +126,12 @@ struct MediaSummary: Identifiable, Hashable, Sendable {
         backdropPath != nil
     }
 
+    /// Returns true if this is a foreign language (non-English) title.
+    var isForeignLanguage: Bool {
+        guard let lang = originalLanguage else { return false }
+        return lang != "en"
+    }
+
     // MARK: - Sorting Helpers
 
     /// Compares this item to another for popularity sorting.
@@ -177,6 +186,7 @@ extension MediaSummary {
         self.voteCount = detail.voteCount
         self.genreIDs = detail.genres.map { $0.id }
         self.popularity = detail.popularity
+        self.originalLanguage = detail.originalLanguage
     }
 }
 

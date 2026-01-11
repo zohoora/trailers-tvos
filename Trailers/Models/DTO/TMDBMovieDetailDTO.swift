@@ -87,11 +87,17 @@ struct TMDBMovieDetailDTO: Decodable, Sendable {
     /// IMDB ID.
     let imdbId: String?
 
+    /// Original language code.
+    let originalLanguage: String?
+
     /// Release dates container (for certification extraction).
     let releaseDates: TMDBReleaseDatesContainer?
 
     /// Videos container.
     let videos: TMDBVideosContainer?
+
+    /// Credits container (cast and crew).
+    let credits: TMDBCreditsContainer?
 
     // MARK: - Coding Keys
 
@@ -113,8 +119,10 @@ struct TMDBMovieDetailDTO: Decodable, Sendable {
         case revenue
         case status
         case imdbId = "imdb_id"
+        case originalLanguage = "original_language"
         case releaseDates = "release_dates"
         case videos
+        case credits
     }
 
     // MARK: - Domain Mapping
@@ -134,6 +142,12 @@ struct TMDBMovieDetailDTO: Decodable, Sendable {
         // Convert videos
         let domainVideos = (videos?.results ?? []).map { $0.toVideo() }
 
+        // Convert cast (top 10)
+        let domainCast = (credits?.cast ?? [])
+            .sorted { $0.order ?? 999 < $1.order ?? 999 }
+            .prefix(10)
+            .map { $0.toCastMember() }
+
         return MediaDetail(
             id: MediaID(type: .movie, id: id),
             title: title,
@@ -149,7 +163,9 @@ struct TMDBMovieDetailDTO: Decodable, Sendable {
             genres: domainGenres,
             certification: certification,
             videos: domainVideos,
-            popularity: popularity
+            popularity: popularity,
+            originalLanguage: originalLanguage,
+            cast: Array(domainCast)
         )
     }
 }
@@ -166,6 +182,41 @@ struct TMDBReleaseDatesContainer: Decodable, Sendable {
 /// Container for videos in detail response.
 struct TMDBVideosContainer: Decodable, Sendable {
     let results: [TMDBVideoDTO]?
+}
+
+// MARK: - Credits Container
+
+/// Container for credits in detail response.
+struct TMDBCreditsContainer: Decodable, Sendable {
+    let cast: [TMDBCastMemberDTO]?
+}
+
+/// DTO for a cast member.
+struct TMDBCastMemberDTO: Decodable, Sendable {
+    let id: Int
+    let name: String
+    let character: String?
+    let profilePath: String?
+    let order: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case character
+        case profilePath = "profile_path"
+        case order
+    }
+
+    /// Converts to domain model.
+    func toCastMember() -> CastMember {
+        CastMember(
+            id: id,
+            name: name,
+            character: character,
+            profilePath: profilePath,
+            order: order ?? 999
+        )
+    }
 }
 
 // MARK: - Identifiable
