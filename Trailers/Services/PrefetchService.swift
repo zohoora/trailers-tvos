@@ -105,6 +105,16 @@ actor PrefetchService {
         prefetchedIDs.removeAll()
     }
 
+    /// Cancels all pending prefetch tasks.
+    ///
+    /// Call this when app enters background to stop background activity.
+    func cancelAll() {
+        for (_, task) in pendingTasks {
+            task.cancel()
+        }
+        pendingTasks.removeAll()
+    }
+
     // MARK: - Private Methods
 
     /// Performs the actual prefetch.

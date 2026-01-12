@@ -196,7 +196,7 @@ enum Config {
 
         // Default fallback - update this with your Mac's IP
         // Find your Mac's IP: System Settings > Network, or run `ifconfig | grep inet`
-        return "http://192.168.50.149:8080"
+        return "http://192.168.50.192:8080"
     }
 
     /// Preferred video quality for in-app playback.

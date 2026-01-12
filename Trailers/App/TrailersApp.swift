@@ -28,6 +28,10 @@ import SwiftUI
 @main
 struct TrailersApp: App {
 
+    // MARK: - Environment
+
+    @Environment(\.scenePhase) private var scenePhase
+
     // MARK: - Scene
 
     var body: some Scene {
@@ -37,6 +41,9 @@ struct TrailersApp: App {
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.didReceiveMemoryWarningNotification)) { _ in
                     handleMemoryWarning()
                 }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            handleScenePhase(newPhase)
         }
     }
 
@@ -93,13 +100,39 @@ extension TrailersApp {
         switch phase {
         case .active:
             Log.app.info("App became active")
+            // Resume network monitoring
+            NetworkMonitor.shared.startMonitoring()
+
         case .inactive:
             Log.app.info("App became inactive")
+
         case .background:
             Log.app.info("App entered background")
-            // Could trigger cache cleanup here
+            // Stop all background activity to allow device to sleep
+            suspendBackgroundActivity()
+
         @unknown default:
             break
         }
+    }
+
+    /// Suspends all background activity when app is backgrounded.
+    ///
+    /// This allows the Apple TV to enter sleep mode properly.
+    private func suspendBackgroundActivity() {
+        // Stop network monitoring
+        NetworkMonitor.shared.stopMonitoring()
+
+        // Clear trailer prefetch cache (stops AVPlayer buffering)
+        Task {
+            await TrailerPrefetchService.shared.clearCache()
+        }
+
+        // Clear detail prefetch pending tasks
+        Task {
+            await PrefetchService.shared.cancelAll()
+        }
+
+        Log.app.info("Background activity suspended")
     }
 }
